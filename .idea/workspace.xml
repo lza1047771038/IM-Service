@@ -4,53 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/controller/NonBlockingSocketServerServiceImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/controller/SocketService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/controller/config/SocketConfig.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/factory/SocketServerServiceFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/impl/ClientServiceWrapper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/impl/NoEncryptor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/impl/handler/MessageHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/impl/handler/RequestHandlerWrapper.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/impl/handler/UserAuthorizationHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/java/org/im/service/Const.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/ClientInfo.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/IEncryptor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/RequestHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/SocketServerService.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/DynamicMessageQueue.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/MessageQueueImpl.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/interfaces/MessageQueue.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/metadata/Message.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/ClientRequest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/ServerResponse.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/moshi/Moshi.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/moshi/NullSafeAdapter.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/Closeable.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/DynamicQueueTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/SocketServiceTest.kt" afterDir="false" />
+    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="[initial commit] complete with server, now left client waiting for complete">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,36 +63,6 @@
       <recent name="org.im.service.server.message.interfaces" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.SocketServiceTestKt">
-    <configuration name="DynamicQueueTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="DynamicQueueTestKt" />
-      <module name="Test.test" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="MainKt" />
-      <module name="Test.main" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SocketServiceTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="SocketServiceTestKt" />
-      <module name="Test.test" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Kotlin.SocketServiceTestKt" />
-        <item itemvalue="Kotlin.DynamicQueueTestKt" />
-        <item itemvalue="Kotlin.MainKt" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -146,6 +72,14 @@
       <option name="presentableId" value="Default" />
       <updated>1667733382095</updated>
     </task>
+    <task id="LOCAL-00001" summary="[initial commit] complete with server, now left client waiting for complete">
+      <created>1669478536651</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669478536651</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -158,6 +92,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[initial commit] complete with server, now left client waiting for complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="[initial commit] complete with server, now left client waiting for complete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

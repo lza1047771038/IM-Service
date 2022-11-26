@@ -1,5 +1,5 @@
 
-rootProject.name = 'Test'
+rootProject.name = 'IM-Service'
 include 'Ksp'
 include 'common'
 include 'client'
