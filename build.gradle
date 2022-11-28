@@ -1,13 +1,13 @@
 buildscript {
     repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/spring"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
         google()
         mavenCentral()
-        maven {
-            "url" "https://maven.aliyun.com/repository/spring"
-        }
-        maven {
-            "url" "https://maven.aliyun.com/repository/central"
-        }
     }
     dependencies {
     }
@@ -23,26 +23,26 @@ version = '1.0-SNAPSHOT'
 
 subprojects {
     repositories {
+        maven {
+            url "https://maven.aliyun.com/repository/spring"
+        }
+        maven {
+            url "https://maven.aliyun.com/repository/central"
+        }
         google()
         mavenCentral()
-        maven {
-            "url" "https://maven.aliyun.com/repository/spring"
-        }
-        maven {
-            "url" "https://maven.aliyun.com/repository/central"
-        }
     }
 }
 
 repositories {
+    maven {
+        url "https://maven.aliyun.com/repository/central"
+    }
+    maven {
+        url "https://maven.aliyun.com/repository/spring"
+    }
     google()
     mavenCentral()
-    maven {
-        "url" "https://maven.aliyun.com/repository/central"
-    }
-    maven {
-        "url" "https://maven.aliyun.com/repository/spring"
-    }
 }
 
 dependencies {

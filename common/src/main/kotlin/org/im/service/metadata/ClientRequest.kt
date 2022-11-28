@@ -9,7 +9,7 @@ data class ClientRequest(
 )
 
 fun ClientRequest.toJson(): String {
-    return moshi.adapter(ClientRequest::class.java).toJson(this)
+    return "${moshi.adapter(ClientRequest::class.java).toJson(this)}\n"
 }
 
 val ClientRequest.isAuthorizationRequest: Boolean
@@ -19,14 +19,14 @@ var ClientRequest.content: String
     set(value) { params[Const.Param.PARAM_CONTENT] = value }
     get() = params[Const.Param.PARAM_CONTENT] as? String ?: ""
 
-var ClientRequest.clientToken: String
-    set(value) { params[Const.Param.PARAM_USER_TOKEN] = value }
-    get() = params[Const.Param.PARAM_USER_TOKEN] as? String ?: ""
+var ClientRequest.clientSessionId: String
+    set(value) { params[Const.Param.PARAM_USER_SESSION_ID] = value }
+    get() = params[Const.Param.PARAM_USER_SESSION_ID] as? String ?: ""
 
 var ClientRequest.clientUserId: String
     set(value) { params[Const.Param.PARAM_USER_ID] = value }
     get() = params[Const.Param.PARAM_USER_ID] as? String ?: ""
 
-var ClientRequest.toUserIdToken: String
+var ClientRequest.toUserSessionId: String
     set(value) { params[Const.Param.PARAM_USER_ID] = value }
     get() = params[Const.Param.PARAM_USER_ID] as? String ?: ""

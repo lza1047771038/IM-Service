@@ -1,12 +1,17 @@
 import org.im.service.Const
-import org.im.service.metadata.*
+import org.im.service.log.isDebugLog
+import org.im.service.log.logger
+import org.im.service.metadata.ClientRequest
+import org.im.service.metadata.sessionId
+import org.im.service.metadata.clientUserId
+import org.im.service.metadata.content
 import org.im.service.server.controller.SocketService
 import org.im.service.server.controller.config.SocketConfig
 import org.im.service.server.impl.NoEncryptor
+import org.im.service.utils.closeSilently
 import org.im.service.utils.readResponse
 import org.im.service.utils.sendRequest
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -15,6 +20,8 @@ import java.nio.channels.Selector
 import java.nio.channels.SocketChannel
 
 fun main() {
+    isDebugLog = true
+
     val service = SocketService()
     service.init(SocketConfig())
 
@@ -30,6 +37,9 @@ fun main() {
         val currentThread = Thread.currentThread()
         while (currentThread.isAlive && !currentThread.isInterrupted) {
             runCatching { clientSelector.select() }.onFailure { it.printStackTrace() }
+            if (!clientSocketChannel.isOpen) {
+                break
+            }
             val selectionKeys = clientSelector.selectedKeys().iterator()
             while (selectionKeys.hasNext()) {
                 val selectionKey: SelectionKey? = selectionKeys.next()
@@ -48,8 +58,8 @@ fun main() {
                     selectionKey.isReadable -> {
                         val socketChannel = selectionKey.channel() as? SocketChannel ?: continue
                         val request = socketChannel.readResponse(receiveBuffer, NoEncryptor())
-                        clientToken = request?.clientToken ?: ""
-                        println("login in with account token: ${request?.clientToken}")
+                        clientToken = request?.sessionId ?: ""
+                        logger.log("TestMain", "login in with account token: ${request?.sessionId}")
                     }
                 }
                 selectionKeys.remove()
@@ -70,6 +80,8 @@ fun main() {
                 clientSocketChannel.sendRequest(receiveBuffer, request)
             }
         }
+        clientSelector.closeSilently()
+        clientSocketChannel.closeSilently()
     }
 
     val thread = Thread(clientConnectionRunnable)

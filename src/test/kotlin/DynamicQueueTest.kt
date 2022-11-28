@@ -1,3 +1,4 @@
+import org.im.service.log.logDebug
 import org.im.service.message.queue.DynamicMessageQueue
 import org.im.service.message.queue.metadata.Message
 
@@ -23,7 +24,7 @@ fun main() {
             val message = Message {
                 args = System.nanoTime()
                 val currentThread = Thread.currentThread()
-                println("operation runs in thread: ${currentThread.name}, object: $this")
+                logDebug("operation runs in thread: ${currentThread.name}, object: $this")
                 if (index > 1000 - 3) {
                     currentThread.interrupt()
                 }

@@ -2,7 +2,7 @@ package org.im.service;
 
 public interface Const {
     interface Param {
-        String PARAM_USER_TOKEN = "userToken";
+        String PARAM_USER_SESSION_ID = "sessionId";
         String PARAM_USER_ID = "userId";
 
         String PARAM_CONTENT = "content";

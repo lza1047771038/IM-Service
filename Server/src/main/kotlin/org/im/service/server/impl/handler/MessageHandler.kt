@@ -1,31 +1,31 @@
 package org.im.service.server.impl.handler
 
 import org.im.service.Const
-import org.im.service.interfaces.ClientInfo
+import org.im.service.interfaces.ClientService
 import org.im.service.interfaces.RequestHandler
+import org.im.service.log.logDebug
 import org.im.service.metadata.ClientRequest
 import org.im.service.metadata.ServerResponse
-import org.im.service.metadata.toUserIdToken
-import org.im.service.utils.responseTo
+import org.im.service.metadata.toUserSessionId
 import java.nio.channels.SocketChannel
 
 class MessageHandler(
-    private val clientInfo: ClientInfo
+    private val clientService: ClientService
 ): RequestHandler {
     override fun handle(socketChannel: SocketChannel, request: ClientRequest) {
-        val toUserIdToken = request.toUserIdToken
-        if (toUserIdToken.isEmpty()) {
-            println("send message with empty user id token")
+        val toUserSessionId = request.toUserSessionId
+        if (toUserSessionId.isEmpty()) {
+            logDebug("send message with empty user id token")
             return
         }
 
-        val isUserOnline = clientInfo.contains(toUserIdToken)
+        val isUserOnline = clientService.contains(toUserSessionId)
         if (!isUserOnline) {
-            println("user: $toUserIdToken is not online")
+            logDebug("user: $toUserSessionId is not online")
             return
         }
 
         val response = ServerResponse(method = Const.ResponseMethod.MESSAGE_TEXT, data = request.params)
-        clientInfo.getUserChannel(toUserIdToken)?.responseTo(response)
+        clientService.getChannel(toUserSessionId)?.writeResponse(response)
     }
 }

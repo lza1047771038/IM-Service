@@ -2,6 +2,7 @@ package org.im.service.server.controller
 
 import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.RequestHandler
+import org.im.service.interfaces.SocketChannelDispatcher
 import org.im.service.interfaces.SocketServerService
 import org.im.service.message.queue.interfaces.MessageQueue
 import org.im.service.message.queue.interfaces.execute
@@ -19,7 +20,8 @@ class NonBlockingSocketServerServiceImpl(
     override val port: Int,
     private val encryptor: IEncryptor,
     private val requestHandler: RequestHandler,
-    private val messageQueue: MessageQueue
+    private val messageQueue: MessageQueue,
+    private val dispatcher: SocketChannelDispatcher
 ) : SocketServerService {
 
     companion object {
@@ -31,7 +33,6 @@ class NonBlockingSocketServerServiceImpl(
     private val serverSocketChannel: ServerSocketChannel by lazy { ServerSocketChannel.open() }
     private val serverSocket: ServerSocket by lazy { serverSocketChannel.socket() }
     private val selector: Selector by lazy { Selector.open() }
-    private val byteBuffer: ByteBuffer = ByteBuffer.allocate(10240)
 
     private var thread: Thread? = null
 
@@ -45,37 +46,8 @@ class NonBlockingSocketServerServiceImpl(
                 break
             }
 
-            val selectionKeys = selector.selectedKeys().iterator()
-            while (selectionKeys.hasNext()) {
-                val selectionKey: SelectionKey? = selectionKeys.next();
-                when {
-                    selectionKey == null || !selectionKey.isValid -> continue
-                    selectionKey.isAcceptable -> selectionKey.acceptConnection()
-                    selectionKey.isReadable -> {
-                        messageQueue.execute {
-                            val byteBuffer = selectionKey.attachment() as? ByteBuffer ?: byteBuffer
-                            val socketChannel = selectionKey.channel() as? SocketChannel ?: return@execute
-                            val clientRequest = synchronized(byteBuffer) {
-                                socketChannel.readRequest(byteBuffer, encryptor) ?: return@execute
-                            }
-                            requestHandler.handle(socketChannel, clientRequest)
-                        }
-                    }
-                }
-                selectionKeys.remove()
-            }
+            dispatcher.dispatch(selector)
         }
-    }
-
-    private fun SelectionKey.acceptConnection() {
-        val socketServerChannel = channel() as? ServerSocketChannel
-        if (socketServerChannel == null) {
-            println("socketServerChannel is Empty, return operation")
-            return
-        }
-        val clientChannel = socketServerChannel.accept()
-        clientChannel.configureBlocking(false)
-        clientChannel.register(selector, SelectionKey.OP_READ)
     }
 
     override fun startListeningToTargetPort() {
