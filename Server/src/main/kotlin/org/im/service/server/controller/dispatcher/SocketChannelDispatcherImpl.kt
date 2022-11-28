@@ -21,7 +21,7 @@ class SocketChannelDispatcherImpl(
 
     override fun onAcceptReadable(byteBuffer: ByteBuffer, socketChannel: SocketChannel) {
         messageQueue.execute {
-            val clientRequests = socketChannel.readRequest(byteBuffer, encryptor) ?: return@execute
+            val clientRequests = socketChannel.readRequest(byteBuffer, encryptor)
             clientRequests.forEach { clientRequest ->
                 if (clientRequest != null) {
                     requestHandler.handle(socketChannel, clientRequest)

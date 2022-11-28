@@ -1,10 +1,7 @@
 import org.im.service.Const
 import org.im.service.log.isDebugLog
 import org.im.service.log.logger
-import org.im.service.metadata.ClientRequest
-import org.im.service.metadata.sessionId
-import org.im.service.metadata.clientUserId
-import org.im.service.metadata.content
+import org.im.service.metadata.*
 import org.im.service.server.controller.SocketService
 import org.im.service.server.controller.config.SocketConfig
 import org.im.service.server.impl.NoEncryptor
@@ -48,7 +45,7 @@ fun main() {
                     selectionKey.isConnectable -> {
                         val request = ClientRequest(method = Const.RequestMethod.USER_AUTHORIZATION)
                         val channel = selectionKey.channel() as? SocketChannel ?: continue
-                        request.clientToken = clientToken
+                        request.clientSessionId = clientToken
                         request.clientUserId = "1000022131"
                         synchronized(receiveBuffer) {
                             channel.sendRequest(receiveBuffer, request)
@@ -75,7 +72,7 @@ fun main() {
         while (bufferReader.readLine().also { line = it } != "exit") {
             val request = ClientRequest(method = Const.RequestMethod.MESSAGE_TEXT)
             request.content = line
-            request.clientToken = clientToken
+            request.clientSessionId = clientToken
             synchronized(receiveBuffer) {
                 clientSocketChannel.sendRequest(receiveBuffer, request)
             }
