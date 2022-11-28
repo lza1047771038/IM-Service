@@ -41,7 +41,7 @@ class SocketServersWrapper {
         val socketServers = HashMap<Int, SocketServerService>()
 
         for (port in ports) {
-            val socketServerService = SocketServerServiceFactory.create(port, encryptor, requestHandler, messageQueue, socketServiceDispatcher)
+            val socketServerService = SocketServerServiceFactory.create(config.address, port, encryptor, requestHandler, messageQueue, socketServiceDispatcher)
             socketServers[socketServerService.port] = socketServerService
         }
 

@@ -1,6 +1,7 @@
 package org.im.service.server.impl.handler
 
 import okio.ByteString.Companion.decodeBase64
+import okio.ByteString.Companion.encodeUtf8
 import org.im.service.Const
 import org.im.service.interfaces.ClientService
 import org.im.service.interfaces.RequestHandler
@@ -26,7 +27,7 @@ class UserAuthorizationHandler(
     }
 
     private fun String.generateUserToken(): String {
-        return this.decodeBase64()?.base64() ?: ""
+        return this.encodeUtf8().base64()
     }
 
     private fun userAuthorizationResponse(generatedSessionId: String): ServerResponse {

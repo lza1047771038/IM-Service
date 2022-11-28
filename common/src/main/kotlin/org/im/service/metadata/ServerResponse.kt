@@ -8,13 +8,13 @@ import java.net.HttpURLConnection
 data class ServerResponse(
     val code: Int = HttpURLConnection.HTTP_OK,
     val method: String,
-    val data: MutableMap<String, Any?> = mutableMapOf(),
+    val content: MutableMap<String, Any?> = mutableMapOf(),
     val message: String = ""
 ) {
     companion object {
         @JvmStatic
         fun success(method: String, data: MutableMap<String, Any?> = mutableMapOf()): ServerResponse {
-            return ServerResponse(method = method, data = data)
+            return ServerResponse(method = method, content = data)
         }
 
         @JvmStatic
@@ -26,7 +26,7 @@ data class ServerResponse(
 
         @JvmStatic
         fun error(method: String, message: String, code: Int, data: MutableMap<String, Any?> = mutableMapOf()): ServerResponse {
-            return ServerResponse(code = code, method = method, data = data, message = message)
+            return ServerResponse(code = code, method = method, content = data, message = message)
         }
     }
 }
@@ -36,5 +36,6 @@ fun ServerResponse.toJson(): String {
 }
 
 var ServerResponse.sessionId: String
-    set(value) {data[Const.Param.PARAM_USER_SESSION_ID] = value}
-    get() = data[Const.Param.PARAM_USER_SESSION_ID] as? String ?: ""
+    set(value) {
+        content[Const.Param.PARAM_USER_SESSION_ID] = value}
+    get() = content[Const.Param.PARAM_USER_SESSION_ID] as? String ?: ""

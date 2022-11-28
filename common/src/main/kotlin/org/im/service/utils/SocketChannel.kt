@@ -3,9 +3,11 @@ package org.im.service.utils
 import org.im.service.moshi.moshi
 import org.im.service.interfaces.IEncryptor
 import org.im.service.log.logDebug
+import org.im.service.log.logger
 import org.im.service.metadata.ClientRequest
 import org.im.service.metadata.ServerResponse
 import org.im.service.metadata.toJson
+import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
@@ -70,7 +72,7 @@ fun SocketChannel.readRequest(byteBuffer: ByteBuffer?, encryptor: IEncryptor?): 
 }
 
 fun SocketChannel.responseTo(response: ServerResponse) {
-    val serializedString = response.toJson()
+    val serializedString = "${response.toJson()}\n"
     val byteBuffer = ByteBuffer.wrap(serializedString.encodeToByteArray())
     writeToTarget(byteBuffer)
 }
@@ -106,6 +108,28 @@ fun SocketChannel.sendRequest(buffer: ByteBuffer?, request: ClientRequest) {
     byteBuffer.put(serializedString.encodeToByteArray())
     byteBuffer.flip()
     writeToTarget(byteBuffer)
+}
+
+fun SocketChannel.readJSONResponse(byteBuffer: ByteBuffer?, encryptor: IEncryptor?): List<JSONObject?> {
+    val decodeByteArray = decodeByteArray(byteBuffer)
+    if (decodeByteArray == null || decodeByteArray.isEmpty()) {
+        return emptyList()
+    }
+    return encryptor?.decodeToJSONResponse(decodeByteArray) ?: emptyList()
+}
+
+private fun IEncryptor.decodeToJSONResponse(byteArray: ByteArray?): List<JSONObject?> {
+    byteArray ?: return emptyList()
+    val decodeStringResource = decode(byteArray).trim()
+    logger.log("Client", "on receive message: $decodeStringResource")
+    val splitDecodeStringResource = decodeStringResource.split('\n')
+    return splitDecodeStringResource.map { splitResource ->
+        kotlin.runCatching {
+            JSONObject(splitResource)
+        }.onFailure {
+            it.printStackTrace()
+        }.getOrNull()
+    }
 }
 
 private fun IEncryptor.decodeResponse(byteArray: ByteArray?): ServerResponse? {

@@ -25,7 +25,7 @@ class MessageHandler(
             return
         }
 
-        val response = ServerResponse(method = Const.ResponseMethod.MESSAGE_TEXT, data = request.params)
+        val response = ServerResponse(method = Const.ResponseMethod.MESSAGE_TEXT, content = request.params)
         clientService.getChannel(toUserSessionId)?.writeResponse(response)
     }
 }

@@ -1,4 +1,4 @@
-package org.im.service.server.impl
+package org.im.service.impl
 
 import org.im.service.interfaces.IEncryptor
 

@@ -17,6 +17,7 @@ import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
 
 class NonBlockingSocketServerServiceImpl(
+    private val address: String,
     override val port: Int,
     private val encryptor: IEncryptor,
     private val requestHandler: RequestHandler,
@@ -52,7 +53,7 @@ class NonBlockingSocketServerServiceImpl(
 
     override fun startListeningToTargetPort() {
         serverSocket.reuseAddress = true
-        serverSocket.bind(InetSocketAddress("127.0.0.1", port))
+        serverSocket.bind(InetSocketAddress(address, port))
         serverSocketChannel.configureBlocking(false)
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT)
         thread?.interrupt()

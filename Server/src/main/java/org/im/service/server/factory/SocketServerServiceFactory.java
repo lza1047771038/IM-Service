@@ -8,7 +8,7 @@ import org.im.service.interfaces.IEncryptor;
 import org.im.service.interfaces.SocketServerService;
 
 public class SocketServerServiceFactory {
-    public static SocketServerService create(final int port, final IEncryptor encryptor, final RequestHandler requestHandler , final MessageQueue messageQueue, final SocketChannelDispatcher dispatcher) {
-        return new NonBlockingSocketServerServiceImpl(port, encryptor, requestHandler, messageQueue, dispatcher);
+    public static SocketServerService create(final String address, final int port, final IEncryptor encryptor, final RequestHandler requestHandler , final MessageQueue messageQueue, final SocketChannelDispatcher dispatcher) {
+        return new NonBlockingSocketServerServiceImpl(address, port, encryptor, requestHandler, messageQueue, dispatcher);
     }
 }

@@ -4,7 +4,7 @@ import org.im.service.log.logger
 import org.im.service.metadata.*
 import org.im.service.server.controller.SocketService
 import org.im.service.server.controller.config.SocketConfig
-import org.im.service.server.impl.NoEncryptor
+import org.im.service.impl.NoEncryptor
 import org.im.service.utils.closeSilently
 import org.im.service.utils.readResponse
 import org.im.service.utils.sendRequest
