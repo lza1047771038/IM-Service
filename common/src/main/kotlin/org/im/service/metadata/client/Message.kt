@@ -1,5 +1,6 @@
 package org.im.service.metadata.client
 
+import org.im.service.metadata.SessionType
 import org.json.JSONObject
 
 /**
@@ -8,15 +9,21 @@ import org.json.JSONObject
  */
 interface Message {
     val uuid: String
-    val textContent: String
+    var textContent: String
 
-    val msgType: MsgType
+    var fromUserId: String
+    var toUserId: String
 
-    val fromUser: MsgAccount
-    val toUser: MsgAccount
+    var msgType: MsgType
+    var sessionType: SessionType
 
-    val remoteExtensions: Map<String, Any?>
-    val clientExtensions: Map<String, Any?>
+    var fromUser: MsgAccount?
+    var toUser: MsgAccount?
+
+    var remoteExtensions: MutableMap<String, Any?>?
+    var clientExtensions: MutableMap<String, Any?>?
+
+    var attachment: Attachment?
 
     interface Factory {
         fun decode(jsonObject: JSONObject): Message?

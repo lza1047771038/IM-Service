@@ -16,6 +16,7 @@ public interface Const {
         String PARAM_CLIENT_EXTENSION = "clientExt";
         String PARAM_TYPE = "type";
         String PARAM_ATTACHMENT = "attachment";
+        String PARAM_SESSION_TYPE = "sessionType";
     }
 
     interface Method {

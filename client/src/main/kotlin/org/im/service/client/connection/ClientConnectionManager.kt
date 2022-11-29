@@ -2,10 +2,7 @@ package org.im.service.client.connection
 
 import org.im.service.Const
 import org.im.service.client.impl.MsgSessionDelegate
-import org.im.service.client.interfaces.GlobalCallback
-import org.im.service.client.interfaces.MsgAuthorization
-import org.im.service.client.interfaces.OnReceiveResponseListener
-import org.im.service.client.interfaces.SessionOperator
+import org.im.service.client.interfaces.*
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
@@ -13,10 +10,9 @@ import org.im.service.interfaces.ResponseHandler
 import org.im.service.metadata.*
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
+import org.im.service.metadata.client.Message
 import org.im.service.metadata.client.MsgAccount
-import org.im.service.utils.method
-import org.im.service.utils.readJSONFromRemote
-import org.im.service.utils.sendRequest
+import org.im.service.utils.*
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
 import java.nio.channels.SelectionKey
@@ -72,22 +68,18 @@ internal class ClientConnectionManager(
         }
     }
     private val sessionOperatorDelegate = object: MsgSessionDelegate() {
-        override fun realSendMessage(transportObj: TransportObj) {
-            synchronized(receiveBuffer) {
-                socketChannel.sendRequest(receiveBuffer, transportObj)
-            }
-        }
+        override val channel: SocketChannel
+            get() = socketChannel
+        override val writeBuffer: ByteBuffer
+            get() = receiveBuffer
     }
 
     private val msgAuthorization = object: MsgAuthorization {
         override fun login(params: LoginParams) {
             IMUserInfo.selfUserId = params.uid
-            val request = TransportObj(method = Const.Method.USER_AUTHORIZATION)
-            request.fromUser = MsgAccount("")
-            request.toUser = MsgAccount("")
-            request.fromUserId = params.uid
-            request.toUserId = params.uid
-            sendMessage(request)
+            IMUserInfo.selfSessionId = params.userToken
+            val message = createLoginMessage()
+            sendMessage(message)
         }
 
         override fun logout() {
@@ -115,5 +107,5 @@ internal class ClientConnectionManager(
 
     fun authorization(): MsgAuthorization = msgAuthorization
 
-    override fun sendMessage(transportObj: TransportObj) = sessionOperatorDelegate.sendMessage(transportObj)
+    override fun sendMessage(message: Message) = sessionOperatorDelegate.sendMessage(message)
 }

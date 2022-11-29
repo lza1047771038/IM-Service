@@ -3,6 +3,7 @@ package org.im.service.client.impl.session
 import org.im.service.client.interfaces.SessionOperator
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.metadata.TransportObj
+import org.im.service.metadata.client.Message
 import org.im.service.metadata.client.MsgAccount
 import org.im.service.metadata.fromUser
 import org.im.service.metadata.fromUserId
@@ -19,8 +20,8 @@ class P2PSessionOperator(
 
     private val toUserAccount by lazy { MsgAccount(targetUserSessionId) }
 
-    override fun sendMessage(transportObj: TransportObj) {
-        transportObj.toUser = toUserAccount
-        rawSessionOperator.sendMessage(transportObj)
+    override fun sendMessage(message: Message) {
+        message.toUser = toUserAccount
+        rawSessionOperator.sendMessage(message)
     }
 }

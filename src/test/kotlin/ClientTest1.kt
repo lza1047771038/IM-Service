@@ -11,9 +11,8 @@ import java.io.InputStreamReader
 
 /**
  * @author: liuzhongao
- * @date: 2022/11/28 下午10:31
+ * @date: 2022/11/29 20:53
  */
-
 fun main() {
     isDebugLog = true
     val address = "127.0.0.1"
@@ -24,10 +23,10 @@ fun main() {
     clientConfig.port = port
 
     val loginParams = LoginParams()
-    loginParams.uid = "123455512"
+    loginParams.uid = "1234555223"
 
     val messageOperator = msgClient.msgOperator()
-    val session = messageOperator.openSession("MTIzNDU1NTIyMw==", SessionType.P2P)
+    val session = messageOperator.openSession("MTIzNDU1NTEy", SessionType.P2P)
 
     msgClient.addGlobalCallback(object: GlobalCallback {
         override fun onConnectionSuccess() {

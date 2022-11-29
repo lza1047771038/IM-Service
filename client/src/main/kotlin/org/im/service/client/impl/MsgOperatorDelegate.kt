@@ -3,8 +3,13 @@ package org.im.service.client.impl
 import org.im.service.client.interfaces.SessionOperator
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.metadata.TransportObj
+import org.im.service.metadata.client.Message
 import org.im.service.metadata.fromUser
 import org.im.service.metadata.fromUserId
+import org.im.service.utils.sendRequest
+import org.im.service.utils.toTransportObj
+import java.nio.ByteBuffer
+import java.nio.channels.SocketChannel
 
 /**
  * @author: liuzhongao
@@ -12,12 +17,16 @@ import org.im.service.metadata.fromUserId
  */
 abstract class MsgSessionDelegate: SessionOperator {
 
-    // append self user info
-    override fun sendMessage(transportObj: TransportObj) {
-        transportObj.fromUserId = IMUserInfo.selfUserId
-        transportObj.fromUser = IMUserInfo.selfAccount
-        realSendMessage(transportObj)
-    }
+    abstract val channel: SocketChannel
 
-    abstract fun realSendMessage(transportObj: TransportObj)
+    abstract val writeBuffer: ByteBuffer
+
+    // append self user info
+    override fun sendMessage(message: Message) {
+        message.fromUserId = IMUserInfo.selfUserId
+        message.fromUser = IMUserInfo.selfAccount
+        synchronized(writeBuffer) {
+            channel.sendRequest(writeBuffer, message.toTransportObj())
+        }
+    }
 }
