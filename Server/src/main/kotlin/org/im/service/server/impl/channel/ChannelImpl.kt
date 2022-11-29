@@ -56,7 +56,7 @@ class ChannelImpl(
     }
 
     override fun containsChannel(socketChannel: SocketChannel): Boolean {
-        return clientSocketChannel.find { it.remoteAddress == socketChannel.remoteAddress } != null && socketChannel.isConnected
+        return clientSocketChannel.find { it.isOpen && it.remoteAddress == socketChannel.remoteAddress } != null && socketChannel.isConnected
     }
 
     override fun addChannel(socketChannel: SocketChannel): Boolean {
