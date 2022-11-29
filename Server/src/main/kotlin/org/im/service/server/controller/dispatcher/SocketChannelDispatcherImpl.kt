@@ -4,7 +4,8 @@ import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.RequestHandler
 import org.im.service.message.queue.interfaces.MessageQueue
 import org.im.service.message.queue.interfaces.execute
-import org.im.service.utils.readRequest
+import org.im.service.utils.method
+import org.im.service.utils.readJSONFromRemote
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
@@ -21,10 +22,11 @@ class SocketChannelDispatcherImpl(
 
     override fun onAcceptReadable(byteBuffer: ByteBuffer, socketChannel: SocketChannel) {
         messageQueue.execute {
-            val clientRequests = socketChannel.readRequest(byteBuffer, encryptor)
+            val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
             clientRequests.forEach { clientRequest ->
                 if (clientRequest != null) {
-                    requestHandler.handle(socketChannel, clientRequest)
+                    val method = clientRequest.method
+                    requestHandler.handle(method, clientRequest, socketChannel)
                 }
             }
         }

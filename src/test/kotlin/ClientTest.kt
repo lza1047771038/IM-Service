@@ -1,11 +1,15 @@
 import org.im.service.client.impl.msgClient
 import org.im.service.client.interfaces.GlobalCallback
+import org.im.service.client.interfaces.sendTextMessage
 import org.im.service.log.isDebugLog
 import org.im.service.log.logDebug
+import org.im.service.metadata.SessionType
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
 import org.im.service.server.controller.SocketService
 import org.im.service.server.controller.config.SocketConfig
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 /**
  * @author: liuzhongao
@@ -29,6 +33,10 @@ fun main() {
 
     val loginParams = LoginParams()
     loginParams.uid = "123455512"
+
+    val messageOperator = msgClient.msgOperator()
+    val session = messageOperator.openSession("112212", SessionType.P2P)
+
     msgClient.addGlobalCallback(object: GlobalCallback {
         override fun onConnectionSuccess() {
             msgClient.authorization().login(loginParams)
@@ -36,7 +44,20 @@ fun main() {
 
         override fun onServiceLoginSuccess(sessionId: String) {
             logDebug("onServiceLoginSuccess, sessionId: $sessionId")
+            session.sendTextMessage("hoaishdofiahsoif \n ohoiwheroiqhweoir \n ohqiowehroqiwhejr")
         }
     })
     msgClient.init(clientConfig)
+
+    val sendTextRunnable = Runnable {
+        val currentThread = Thread.currentThread()
+        while (currentThread.isAlive && !currentThread.isInterrupted) {
+            var userInput = ""
+            val bufferedReader = BufferedReader(InputStreamReader(System.`in`))
+            while (bufferedReader.readLine().also { userInput = it } != "exit") {
+                session.sendTextMessage(userInput)
+            }
+        }
+    }
+    Thread(sendTextRunnable).start()
 }

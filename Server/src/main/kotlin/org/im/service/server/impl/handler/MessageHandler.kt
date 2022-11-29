@@ -1,19 +1,17 @@
 package org.im.service.server.impl.handler
 
-import org.im.service.Const
 import org.im.service.interfaces.ClientService
 import org.im.service.interfaces.RequestHandler
 import org.im.service.log.logDebug
-import org.im.service.metadata.ClientRequest
-import org.im.service.metadata.ServerResponse
-import org.im.service.metadata.toUserSessionId
+import org.im.service.utils.toUserSessionId
+import org.json.JSONObject
 import java.nio.channels.SocketChannel
 
 class MessageHandler(
     private val clientService: ClientService
 ): RequestHandler {
-    override fun handle(socketChannel: SocketChannel, request: ClientRequest) {
-        val toUserSessionId = request.toUserSessionId
+    override fun handle(method: String, jsonObject: JSONObject, socketChannel: SocketChannel) {
+        val toUserSessionId = jsonObject.toUserSessionId
         if (toUserSessionId.isEmpty()) {
             logDebug("send message with empty user id token")
             return
@@ -25,7 +23,6 @@ class MessageHandler(
             return
         }
 
-        val response = ServerResponse(method = Const.ResponseMethod.MESSAGE_TEXT, content = request.params)
-        clientService.getChannel(toUserSessionId)?.writeResponse(response)
+        clientService.getChannel(toUserSessionId)?.writeResponse(jsonObject)
     }
 }

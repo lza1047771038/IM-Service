@@ -2,14 +2,14 @@ package org.im.service.server.impl.channel
 
 import org.im.service.interfaces.Channel
 import org.im.service.interfaces.IEncryptor
-import org.im.service.metadata.ClientRequest
-import org.im.service.metadata.ServerResponse
+import org.im.service.metadata.TransportObj
 import org.im.service.utils.closeSilently
-import org.im.service.utils.readRequest
+import org.im.service.utils.readJSONFromRemote
 import org.im.service.utils.responseTo
+import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
-import java.util.LinkedList
+import java.util.*
 
 /**
  * @author: liuzhongao
@@ -25,23 +25,29 @@ class ChannelImpl(
         clientSocketChannel.add(socketChannel)
     }
 
-    override fun readRequest(byteBuffer: ByteBuffer, encryptor: IEncryptor): List<ClientRequest?> {
+    override fun readRequest(byteBuffer: ByteBuffer, encryptor: IEncryptor): List<JSONObject?> {
         if (clientSocketChannel.isEmpty()) {
             return emptyList()
         }
-        val retList = LinkedList<ClientRequest?>()
+        val retList = LinkedList<JSONObject?>()
         synchronized(clientSocketChannel) {
             for (socketChannel in clientSocketChannel) {
-                val clientRequests = socketChannel.readRequest(byteBuffer, encryptor)
+                val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
                 retList.addAll(clientRequests)
             }
         }
         return retList
     }
 
-    override fun writeResponse(response: ServerResponse) {
+    override fun writeResponse(response: TransportObj) {
         clientSocketChannel.forEach { socketChannel ->
             socketChannel.responseTo(response)
+        }
+    }
+
+    override fun writeResponse(jsonObject: JSONObject) {
+        clientSocketChannel.forEach { socketChannel ->
+            socketChannel.responseTo(jsonObject)
         }
     }
 

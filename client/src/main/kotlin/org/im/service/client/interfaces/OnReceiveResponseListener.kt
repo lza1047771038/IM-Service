@@ -1,7 +1,7 @@
 package org.im.service.client.interfaces
 
-import org.im.service.metadata.ServerResponse
+import org.json.JSONObject
 
 interface OnReceiveResponseListener {
-    fun onReceive(response: ServerResponse)
+    fun onReceive(message: JSONObject)
 }

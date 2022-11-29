@@ -4,11 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="fix: compile">
+    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MessageOperatorImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgOperatorDelegate.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/session/P2PSessionOperator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/MsgOperator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/SessionOperator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/utils/IMUserInfo.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/SessionType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/TransportObj.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/JSON.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/NonBlockingSocketServerServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/NonBlockingSocketServerServiceImpl.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/SocketChannelDispatcherImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/SocketChannelDispatcherImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/channel/ChannelImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/channel/ChannelImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/MessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/MessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/RequestHandlerWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/RequestHandlerWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/UserAuthorizationHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/UserAuthorizationHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/connection/ClientConnectionManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/connection/ClientConnectionManager.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgClientImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgClientImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/ResponseHandlerWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/ResponseHandlerWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/UserAuthorizationResultHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/UserAuthorizationResultHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/MsgClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/MsgClient.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/SocketServiceTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/SocketServiceTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/OnReceiveResponseListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/OnReceiveResponseListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/java/org/im/service/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/im/service/Const.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/Channel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/Channel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/RequestHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/RequestHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/ResponseHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/ResponseHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/ClientRequest.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/ServerResponse.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MsgType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MsgType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ClientTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ClientTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/SocketServiceTest.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +53,9 @@
       <list>
         <option value="Kotlin Data Class" />
         <option value="Class" />
-        <option value="Kotlin File" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin File" />
+        <option value="Kotlin Enum" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -72,7 +101,14 @@
       <recent name="org.im.service.server.message" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Kotlin.ClientTestKt">
+    <configuration name="ClientTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ClientTestKt" />
+      <module name="IM-Service.test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SocketServiceTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="SocketServiceTestKt" />
       <module name="IM-Service.test" />
@@ -82,6 +118,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.ClientTestKt" />
         <item itemvalue="Kotlin.SocketServiceTestKt" />
       </list>
     </recent_temporary>
@@ -124,11 +161,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt</url>
-          <line>15</line>
-          <option name="timeStamp" value="131" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.nio.channels.ClosedChannelException" package="java.nio.channels" />
           <option name="timeStamp" value="132" />

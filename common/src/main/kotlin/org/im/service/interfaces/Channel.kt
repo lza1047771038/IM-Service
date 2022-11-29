@@ -2,6 +2,8 @@ package org.im.service.interfaces
 
 import org.im.service.metadata.ClientRequest
 import org.im.service.metadata.ServerResponse
+import org.im.service.metadata.TransportObj
+import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
@@ -10,9 +12,9 @@ import java.nio.channels.SocketChannel
  * @date: 2022/11/28 10:22
  */
 interface Channel {
-    fun readRequest(byteBuffer: ByteBuffer, encryptor: IEncryptor): List<ClientRequest?>
-    fun writeResponse(response: ServerResponse)
-
+    fun readRequest(byteBuffer: ByteBuffer, encryptor: IEncryptor): List<JSONObject?>
+    fun writeResponse(response: TransportObj)
+    fun writeResponse(jsonObject: JSONObject)
     fun hasLiveClients(): Boolean
 
     fun containsChannel(socketChannel: SocketChannel): Boolean

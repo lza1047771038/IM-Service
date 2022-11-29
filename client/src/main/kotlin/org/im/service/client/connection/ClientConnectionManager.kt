@@ -1,18 +1,21 @@
 package org.im.service.client.connection
 
 import org.im.service.Const
+import org.im.service.client.impl.MsgSessionDelegate
 import org.im.service.client.interfaces.GlobalCallback
 import org.im.service.client.interfaces.MsgAuthorization
 import org.im.service.client.interfaces.OnReceiveResponseListener
+import org.im.service.client.interfaces.SessionOperator
+import org.im.service.client.utils.IMUserInfo
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.ResponseHandler
-import org.im.service.metadata.ClientRequest
+import org.im.service.metadata.*
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
-import org.im.service.metadata.clientSessionId
-import org.im.service.metadata.clientUserId
-import org.im.service.utils.readJSONResponse
+import org.im.service.metadata.client.MsgAccount
+import org.im.service.utils.method
+import org.im.service.utils.readJSONFromRemote
 import org.im.service.utils.sendRequest
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -23,7 +26,7 @@ import java.nio.channels.SocketChannel
 internal class ClientConnectionManager(
     private val responseHandler: ResponseHandler,
     private val globalCallback: GlobalCallback
-) {
+): SessionOperator {
     private val threadName = "${this.javaClass.simpleName}-thread-0"
 
     private val socketChannel: SocketChannel by lazy { SocketChannel.open() }
@@ -55,17 +58,40 @@ internal class ClientConnectionManager(
                         socketChannel.register(selector, SelectionKey.OP_READ)
                     }
                     selectionKey.isReadable -> {
-                        val responseJSONObjects = socketChannel.readJSONResponse(receiveBuffer, encryptor)
+                        val responseJSONObjects = socketChannel.readJSONFromRemote(receiveBuffer, encryptor)
                         responseJSONObjects.forEach { jsonObject ->
                             if (jsonObject == null) {
                                 return@forEach
                             }
-                            val method = jsonObject.optString("method")
+                            val method = jsonObject.method
                             responseHandler.handle(method, jsonObject)
                         }
                     }
                 }
             }
+        }
+    }
+    private val sessionOperatorDelegate = object: MsgSessionDelegate() {
+        override fun realSendMessage(transportObj: TransportObj) {
+            synchronized(receiveBuffer) {
+                socketChannel.sendRequest(receiveBuffer, transportObj)
+            }
+        }
+    }
+
+    private val msgAuthorization = object: MsgAuthorization {
+        override fun login(params: LoginParams) {
+            IMUserInfo.selfUserId = params.uid
+            val request = TransportObj(method = Const.Method.USER_AUTHORIZATION)
+            request.fromUser = MsgAccount("")
+            request.toUser = MsgAccount("")
+            request.fromUserId = params.uid
+            request.toUserId = params.uid
+            sendMessage(request)
+        }
+
+        override fun logout() {
+
         }
     }
 
@@ -87,18 +113,7 @@ internal class ClientConnectionManager(
         this.receiveResponseListener = receiveResponseListener
     }
 
-    fun authorization(): MsgAuthorization = object: MsgAuthorization {
-        override fun login(params: LoginParams) {
-            val request = ClientRequest(method = Const.RequestMethod.USER_AUTHORIZATION)
-            request.clientSessionId = params.userToken
-            request.clientUserId = params.uid
-            synchronized(receiveBuffer) {
-                socketChannel.sendRequest(receiveBuffer, request)
-            }
-        }
+    fun authorization(): MsgAuthorization = msgAuthorization
 
-        override fun logout() {
-
-        }
-    }
+    override fun sendMessage(transportObj: TransportObj) = sessionOperatorDelegate.sendMessage(transportObj)
 }

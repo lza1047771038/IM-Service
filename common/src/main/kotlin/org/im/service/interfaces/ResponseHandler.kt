@@ -1,6 +1,5 @@
 package org.im.service.interfaces
 
-import org.im.service.metadata.ServerResponse
 import org.json.JSONObject
 
 /**

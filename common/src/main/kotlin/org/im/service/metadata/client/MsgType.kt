@@ -11,3 +11,13 @@ enum class MsgType(val code: Int) {
     Image(3),
     Custom(4)
 }
+
+fun createMsgTypeByCode(code: Int): MsgType {
+    return when (code) {
+        MsgType.Text.code -> MsgType.Text
+        MsgType.Audio.code -> MsgType.Audio
+        MsgType.Image.code -> MsgType.Image
+        MsgType.Custom.code -> MsgType.Custom
+        else -> MsgType.Unknown
+    }
+}

@@ -19,4 +19,5 @@ interface MsgClient {
 
     fun authorization(): MsgAuthorization
 
+    fun msgOperator(): MsgOperator
 }

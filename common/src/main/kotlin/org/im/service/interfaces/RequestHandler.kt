@@ -1,8 +1,8 @@
 package org.im.service.interfaces
 
-import org.im.service.metadata.ClientRequest
+import org.json.JSONObject
 import java.nio.channels.SocketChannel
 
 interface RequestHandler {
-    fun handle(socketChannel: SocketChannel, request: ClientRequest)
+    fun handle(method: String, jsonObject: JSONObject, socketChannel: SocketChannel)
 }

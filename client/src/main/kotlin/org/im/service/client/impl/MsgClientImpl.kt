@@ -2,10 +2,7 @@ package org.im.service.client.impl
 
 import org.im.service.client.connection.ClientConnectionManager
 import org.im.service.client.impl.handler.ResponseHandlerWrapper
-import org.im.service.client.interfaces.GlobalCallback
-import org.im.service.client.interfaces.MsgAuthorization
-import org.im.service.client.interfaces.MsgClient
-import org.im.service.client.interfaces.OnReceiveResponseListener
+import org.im.service.client.interfaces.*
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
 import org.im.service.metadata.client.Message
@@ -21,6 +18,7 @@ internal class MsgClientImpl internal constructor(): MsgClient {
     private val globalCallbackWrapper by lazy { GlobalCallbackWrapper() }
     private val responseHandler by lazy { ResponseHandlerWrapper(messageDecodeFactory, globalCallbackWrapper) }
     private val connectionManager by lazy { ClientConnectionManager(responseHandler, globalCallbackWrapper) }
+    private val messageOperator by lazy { MessageOperatorImpl(connectionManager) }
 
     override fun init(imConfig: IMInitConfig) {
         connectionManager.connect(imConfig)
@@ -39,4 +37,6 @@ internal class MsgClientImpl internal constructor(): MsgClient {
     }
 
     override fun authorization(): MsgAuthorization = connectionManager.authorization()
+
+    override fun msgOperator(): MsgOperator = messageOperator
 }
