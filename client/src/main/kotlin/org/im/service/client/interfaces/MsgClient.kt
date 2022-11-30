@@ -1,5 +1,6 @@
 package org.im.service.client.interfaces
 
+import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.Message
 
@@ -11,7 +12,9 @@ interface MsgClient {
 
     fun init(imConfig: IMInitConfig)
 
-    fun addGlobalCallback(callback: GlobalCallback)
+    fun addMessageCallback(callback: IMMessageCallback)
+
+    fun removeMessageCallback(callback: IMMessageCallback)
 
     fun setOnReceiveResponseListener(onReceiveResponseListener: OnReceiveResponseListener)
 
@@ -20,4 +23,6 @@ interface MsgClient {
     fun authorization(): MsgAuthorization
 
     fun msgOperator(): MsgOperator
+
+    fun disconnect()
 }

@@ -1,4 +1,4 @@
-package org.im.service.client.interfaces
+package org.im.service.client.interfaces.callback
 
 /**
  * @author: liuzhongao

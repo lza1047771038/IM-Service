@@ -23,6 +23,13 @@ public interface Const {
         String USER_AUTHORIZATION = "user.authorization.token";
         String MESSAGE_TEXT = "message.text";
     }
+
+    interface Code {
+        int CONNECTION_ESTABLISHED = 1;
+        int SESSION_AUTHORIZATION_SUCCESS = 2;
+        int SESSION_DISCONNECTED = 3;
+        int MESSAGE_RECEIVED = 4;
+    }
 }
 
 // {

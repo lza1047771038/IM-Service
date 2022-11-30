@@ -1,6 +1,7 @@
 import org.im.service.client.impl.msgClient
-import org.im.service.client.interfaces.GlobalCallback
+import org.im.service.client.interfaces.callback.GlobalCallback
 import org.im.service.client.interfaces.sendTextMessage
+import org.im.service.client.utils.onConnectionEstablished
 import org.im.service.log.isDebugLog
 import org.im.service.log.logDebug
 import org.im.service.metadata.SessionType
@@ -28,15 +29,9 @@ fun main() {
     val messageOperator = msgClient.msgOperator()
     val session = messageOperator.openSession("MTIzNDU1NTEy", SessionType.P2P)
 
-    msgClient.addGlobalCallback(object: GlobalCallback {
-        override fun onConnectionSuccess() {
-            msgClient.authorization().login(loginParams)
-        }
-
-        override fun onServiceLoginSuccess(sessionId: String) {
-            logDebug("onServiceLoginSuccess, sessionId: $sessionId")
-        }
-    })
+    msgClient.onConnectionEstablished {
+        msgClient.authorization().login(loginParams)
+    }
     msgClient.init(clientConfig)
 
     val sendTextRunnable = Runnable {

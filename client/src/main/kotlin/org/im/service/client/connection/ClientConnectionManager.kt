@@ -3,16 +3,16 @@ package org.im.service.client.connection
 import org.im.service.Const
 import org.im.service.client.impl.MsgSessionDelegate
 import org.im.service.client.interfaces.*
+import org.im.service.client.interfaces.callback.GlobalCallback
+import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.ResponseHandler
 import org.im.service.log.logger
-import org.im.service.metadata.*
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
 import org.im.service.metadata.client.Message
-import org.im.service.metadata.client.MsgAccount
 import org.im.service.utils.*
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -22,8 +22,10 @@ import java.nio.channels.SocketChannel
 
 internal class ClientConnectionManager(
     private val responseHandler: ResponseHandler,
-    private val globalCallback: GlobalCallback
+    private val messageCallback: IMMessageCallback
 ): SessionOperator {
+    private var imInitConfig: IMInitConfig? = null
+
     private val threadName = "${this.javaClass.simpleName}-thread-0"
 
     private val socketChannel: SocketChannel by lazy { SocketChannel.open() }
@@ -41,6 +43,7 @@ internal class ClientConnectionManager(
             }
 
             if (!socketChannel.isOpen) {
+                messageCallback.onNotify(Const.Code.SESSION_DISCONNECTED, null)
                 break
             }
 
@@ -51,17 +54,16 @@ internal class ClientConnectionManager(
                 when {
                     selectionKey == null || !selectionKey.isValid -> continue
                     selectionKey.isConnectable -> {
-                        globalCallback.onConnectionSuccess()
                         socketChannel.register(selector, SelectionKey.OP_READ)
+                        messageCallback.onNotify(Const.Code.CONNECTION_ESTABLISHED, null)
                     }
                     selectionKey.isReadable -> {
                         val responseJSONObjects = socketChannel.readJSONFromRemote(receiveBuffer, encryptor)
                         responseJSONObjects.forEach { jsonObject ->
-                            if (jsonObject == null) {
-                                return@forEach
+                            if (jsonObject != null) {
+                                val method = jsonObject.method
+                                responseHandler.handle(method, jsonObject)
                             }
-                            val method = jsonObject.method
-                            responseHandler.handle(method, jsonObject)
                         }
                     }
                 }
@@ -77,10 +79,11 @@ internal class ClientConnectionManager(
 
     private val msgAuthorization = object: MsgAuthorization {
         override fun login(params: LoginParams): Boolean {
-            if (!socketChannel.isOpen || !socketChannel.isConnected || socketChannel.isConnectionPending || !socketChannel.finishConnect()) {
+            if (!socketChannel.isOpen) {
                 logger.log("Authorization", "connect not established, skip current operation.")
                 return false
             }
+            while (!socketChannel.finishConnect()) {}
             IMUserInfo.selfUserId = params.uid
             IMUserInfo.selfSessionId = params.userToken
             val message = createLoginMessage()
@@ -97,6 +100,7 @@ internal class ClientConnectionManager(
     private var receiveResponseListener: OnReceiveResponseListener? = null
 
     fun connect(imInitConfig: IMInitConfig) {
+        this.imInitConfig = imInitConfig
         val address = InetSocketAddress(imInitConfig.serverAddress, imInitConfig.port)
         socketChannel.configureBlocking(false)
         socketChannel.register(selector, SelectionKey.OP_CONNECT)
@@ -114,4 +118,10 @@ internal class ClientConnectionManager(
     fun authorization(): MsgAuthorization = msgAuthorization
 
     override fun sendMessage(message: Message) = sessionOperatorDelegate.sendMessage(message)
+
+    fun disconnect() {
+        selector.closeSilently()
+        socketChannel.closeSilently()
+        receiveBuffer.reset()
+    }
 }
