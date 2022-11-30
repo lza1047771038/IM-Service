@@ -7,6 +7,7 @@ import org.im.service.client.utils.IMUserInfo
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.ResponseHandler
+import org.im.service.log.logger
 import org.im.service.metadata.*
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
@@ -75,11 +76,16 @@ internal class ClientConnectionManager(
     }
 
     private val msgAuthorization = object: MsgAuthorization {
-        override fun login(params: LoginParams) {
+        override fun login(params: LoginParams): Boolean {
+            if (!socketChannel.isOpen || !socketChannel.isConnected || socketChannel.isConnectionPending || !socketChannel.finishConnect()) {
+                logger.log("Authorization", "connect not established, skip current operation.")
+                return false
+            }
             IMUserInfo.selfUserId = params.uid
             IMUserInfo.selfSessionId = params.userToken
             val message = createLoginMessage()
             sendMessage(message)
+            return true
         }
 
         override fun logout() {

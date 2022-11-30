@@ -7,6 +7,6 @@ import org.im.service.metadata.client.LoginParams
  * @date: 2022/11/28 14:11
  */
 interface MsgAuthorization {
-    fun login(params: LoginParams)
+    fun login(params: LoginParams): Boolean
     fun logout()
 }
