@@ -20,7 +20,8 @@ class ClientServiceWrapper: ClientService {
     }
 
     override fun contains(key: String): Boolean {
-        return clientSessionMap.containsKey(key)
+        val value = clientSessionMap[key]
+        return value != null && value.hasLiveClients()
     }
 
     override fun contains(socketChannel: SocketChannel): Boolean {

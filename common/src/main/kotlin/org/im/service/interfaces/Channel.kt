@@ -1,7 +1,5 @@
 package org.im.service.interfaces
 
-import org.im.service.metadata.ClientRequest
-import org.im.service.metadata.ServerResponse
 import org.im.service.metadata.TransportObj
 import org.json.JSONObject
 import java.nio.ByteBuffer
@@ -16,7 +14,6 @@ interface Channel {
     fun writeResponse(response: TransportObj)
     fun writeResponse(jsonObject: JSONObject)
     fun hasLiveClients(): Boolean
-
     fun containsChannel(socketChannel: SocketChannel): Boolean
     fun addChannel(socketChannel: SocketChannel): Boolean
     fun removeChannel(socketChannel: SocketChannel): Boolean

@@ -22,11 +22,11 @@ class SocketChannelDispatcherImpl(
 
     override fun onAcceptReadable(byteBuffer: ByteBuffer, socketChannel: SocketChannel) {
         messageQueue.execute {
-            val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
-            clientRequests.forEach { clientRequest ->
-                if (clientRequest != null) {
-                    val method = clientRequest.method
-                    requestHandler.handle(method, clientRequest, socketChannel)
+            val clientMessages = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
+            clientMessages.forEach { message ->
+                if (message != null) {
+                    val method = message.method
+                    requestHandler.handle(method, message, socketChannel)
                 }
             }
         }

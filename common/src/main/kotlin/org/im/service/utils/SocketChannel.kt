@@ -48,6 +48,10 @@ fun SocketChannel.writeToTarget(
     disconnectedCallback: (SocketChannel.() -> Unit)
 ) {
     kotlin.runCatching {
+        if (!isOpen) {
+            disconnectedCallback()
+            return@runCatching
+        }
         while (!finishConnect()) {
         }
         if (!isConnected) {
@@ -67,12 +71,15 @@ fun SocketChannel.writeToTarget(
 }
 
 fun SocketChannel.responseTo(response: TransportObj, disconnectedCallback: DisconnectedCallback = {}) {
-    val serializedString = "${response.toJson()}\n"
-    val byteBuffer = ByteBuffer.wrap(serializedString.encodeToByteArray())
-    writeToTarget(byteBuffer, disconnectedCallback)
+    val serializedString = response.toJson()
+    responseTo(serializedString, disconnectedCallback)
 }
 
 fun SocketChannel.responseTo(response: JSONObject, disconnectedCallback: DisconnectedCallback = {}) {
+    responseTo(response.toString(), disconnectedCallback)
+}
+
+fun SocketChannel.responseTo(response: String, disconnectedCallback: DisconnectedCallback = {}) {
     val serializedString = "${response}\n"
     val byteBuffer = ByteBuffer.wrap(serializedString.encodeToByteArray())
     writeToTarget(byteBuffer, disconnectedCallback)

@@ -41,18 +41,22 @@ class ChannelImpl(
 
     override fun writeResponse(response: TransportObj) {
         clientSocketChannel.forEach { socketChannel ->
-            socketChannel.responseTo(response)
+            socketChannel.responseTo(response) {
+                closeSilently()
+            }
         }
     }
 
     override fun writeResponse(jsonObject: JSONObject) {
         clientSocketChannel.forEach { socketChannel ->
-            socketChannel.responseTo(jsonObject)
+            socketChannel.responseTo(jsonObject) {
+                closeSilently()
+            }
         }
     }
 
     override fun hasLiveClients(): Boolean {
-        return clientSocketChannel.find { it.isConnected && it.isOpen } != null
+        return clientSocketChannel.find { it.isOpen && it.isConnected } != null
     }
 
     override fun containsChannel(socketChannel: SocketChannel): Boolean {
