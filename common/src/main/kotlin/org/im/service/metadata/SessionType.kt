@@ -1,7 +1,5 @@
 package org.im.service.metadata
 
-import org.im.service.metadata.client.MsgType
-
 /**
  * @author: liuzhongao
  * @date: 2022/11/29 13:57

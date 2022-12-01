@@ -3,7 +3,6 @@ package org.im.service.client.connection
 import org.im.service.Const
 import org.im.service.client.impl.MsgSessionDelegate
 import org.im.service.client.interfaces.*
-import org.im.service.client.interfaces.callback.GlobalCallback
 import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.client.utils.IMUserInfo

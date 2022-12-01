@@ -1,10 +1,7 @@
 package org.im.service.server.controller
 
-import org.im.service.interfaces.IEncryptor
-import org.im.service.interfaces.RequestHandler
 import org.im.service.interfaces.SocketChannelDispatcher
 import org.im.service.interfaces.SocketServerService
-import org.im.service.message.queue.interfaces.MessageQueue
 import org.im.service.utils.closeSilently
 import java.net.InetSocketAddress
 import java.net.ServerSocket
