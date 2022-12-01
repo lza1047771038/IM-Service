@@ -4,6 +4,7 @@ import okio.ByteString.Companion.encodeUtf8
 import org.im.service.Const
 import org.im.service.interfaces.ClientService
 import org.im.service.interfaces.RequestHandler
+import org.im.service.log.logger
 import org.im.service.metadata.client.MsgAccount
 import org.im.service.utils.*
 import org.json.JSONObject
@@ -14,6 +15,7 @@ class UserAuthorizationHandler(
 ) : RequestHandler {
 
     override fun handle(method: String, jsonObject: JSONObject, socketChannel: SocketChannel) {
+        logger.log("UserAuthorization", "receive login event from: ${jsonObject.fromUserId}, sessionId: ${jsonObject.fromUserSessionId}")
         val clientSessionId = jsonObject.fromUserSessionId
         if (clientSessionId.isNotEmpty()) {
             clientService.addClient(clientSessionId, socketChannel)
@@ -22,7 +24,6 @@ class UserAuthorizationHandler(
             if (clientUserId.isNotEmpty()) {
                 handleFirstAuthorization(clientUserId, socketChannel)
             } else {
-
             }
         }
     }

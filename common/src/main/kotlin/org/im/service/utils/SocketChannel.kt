@@ -101,7 +101,6 @@ fun SocketChannel.readJSONFromRemote(byteBuffer: ByteBuffer?, encryptor: IEncryp
 private fun IEncryptor.decodeToJSONResponse(byteArray: ByteArray?): List<JSONObject?> {
     byteArray ?: return emptyList()
     val decodeStringResource = decode(byteArray).trim()
-    logDebug("on receive message: $decodeStringResource")
     val splitDecodeStringResource = decodeStringResource.split('\n')
     return splitDecodeStringResource.map { splitResource ->
         kotlin.runCatching {

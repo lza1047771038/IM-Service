@@ -3,6 +3,9 @@ package org.im.service.server.impl.handler
 import org.im.service.interfaces.ClientService
 import org.im.service.interfaces.RequestHandler
 import org.im.service.log.logDebug
+import org.im.service.log.logger
+import org.im.service.utils.fromUserId
+import org.im.service.utils.textContent
 import org.im.service.utils.toUserSessionId
 import org.json.JSONObject
 import java.nio.channels.SocketChannel
@@ -22,6 +25,8 @@ class MessageHandler(
             logDebug("user: $toUserSessionId is not online")
             return
         }
+
+        logger.log("MessageConsumer", "received message from: ${jsonObject.fromUserId}, content: ${jsonObject.textContent}")
 
         clientService.getChannel(toUserSessionId)?.writeResponse(jsonObject)
     }
