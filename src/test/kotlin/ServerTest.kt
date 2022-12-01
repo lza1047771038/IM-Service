@@ -1,6 +1,7 @@
 import org.im.service.log.isDebugLog
 import org.im.service.server.controller.SocketService
 import org.im.service.server.controller.config.SocketConfig
+import org.im.service.utils.networkAddress
 
 /**
  * @author: liuzhongao
@@ -8,7 +9,7 @@ import org.im.service.server.controller.config.SocketConfig
  */
 fun main() {
     isDebugLog = true
-    val address = "127.0.0.1"
+    val address = networkAddress?.hostAddress ?: "127.0.0.1"
     val port = 8080
     val serverConfig = SocketConfig()
     val service = SocketService()

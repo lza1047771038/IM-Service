@@ -1,6 +1,5 @@
 package org.im.service.utils
 
-import com.sun.tools.classfile.ConstantPool.CONSTANT_Class_info
 import org.im.service.Const
 import org.im.service.metadata.client.Message
 import org.im.service.metadata.client.MsgType

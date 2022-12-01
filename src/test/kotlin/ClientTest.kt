@@ -8,6 +8,7 @@ import org.im.service.log.logDebug
 import org.im.service.metadata.SessionType
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.LoginParams
+import org.im.service.utils.networkAddress
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -18,7 +19,7 @@ import java.io.InputStreamReader
 
 fun main() {
     isDebugLog = true
-    val address = "127.0.0.1"
+    val address = networkAddress?.hostAddress ?: "127.0.0.1"
     val port = 8080
 
     val clientConfig = IMInitConfig()
