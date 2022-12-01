@@ -6,6 +6,8 @@ import org.im.service.metadata.client.LoginMessageImpl
 import org.im.service.metadata.client.Message
 import org.im.service.metadata.client.MessageImpl
 import org.im.service.metadata.client.MsgType
+import org.json.JSONObject
+import java.util.UUID
 
 /**
  * @author: liuzhongao
@@ -13,15 +15,17 @@ import org.im.service.metadata.client.MsgType
  */
 
 fun createEmptyMessage(): Message {
-    return MessageImpl()
+    val uuid = UUID.randomUUID().toString()
+    return MessageImpl(uuid)
 }
 
 fun createLoginMessage(): Message {
-    return LoginMessageImpl()
+    val uuid = UUID.randomUUID().toString()
+    return LoginMessageImpl(uuid)
 }
 
 fun createTextMessage(textContent: String, type: SessionType = SessionType.P2P): Message {
-    val message = MessageImpl()
+    val message = createEmptyMessage()
     message.textContent = textContent
     message.msgType = MsgType.Text
     message.sessionType = type
@@ -29,26 +33,20 @@ fun createTextMessage(textContent: String, type: SessionType = SessionType.P2P):
 }
 
 fun createCustomMessage(sessionType: SessionType): Message {
-    val message = MessageImpl()
+    val message = createEmptyMessage()
     message.msgType = MsgType.Custom
     message.sessionType = sessionType
     return message
 }
 
-fun Message.toTransportObj(): TransportObj {
+fun Message.toJSONObj(method: String): JSONObject {
+    return JSONObject().parseIMMessage(method, this)
+}
+
+fun Message.toJSONObj(): JSONObject {
+    // todo: 此处逻辑待优化
     return when (this) {
         is LoginMessageImpl -> Const.Method.USER_AUTHORIZATION
         else -> Const.Method.MESSAGE_TEXT
-    }.let { method -> TransportObj(method = method) }.also { obj ->
-        obj.uuid = uuid
-        obj.textContent = textContent
-        obj.fromUserId = fromUserId
-        obj.toUserId = toUserId
-        obj.fromUser = fromUser
-        obj.toUser = toUser
-        obj.remoteExtension = remoteExtensions
-        obj.clientExtension = clientExtensions
-        obj.type = msgType
-        obj.sessionType = sessionType
-    }
+    }.let { method -> JSONObject().parseIMMessage(method, this) }
 }

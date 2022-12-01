@@ -8,9 +8,9 @@ import org.json.JSONObject
  * @author: liuzhongao
  * @date: 2022/11/28 下午9:41
  */
-class MessageDecodeFactory: Message.Factory {
+class MessageDecodeFactory: Message.DecodeFactory {
 
-    fun addDecodeFactory(factory: Message.Factory) {
+    fun addDecodeFactory(decodeFactory: Message.DecodeFactory) {
 
     }
 

@@ -4,22 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="ignore文件修改">
-      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MessageHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/SessionCallback.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/callback/IMMessageCallback.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/utils/MsgClient.kt" afterDir="false" />
+    <list default="true" id="e0bfc3c2-2528-403a-b163-5d88665f191a" name="Changes" comment="结构优化">
+      <change afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/ClientConfigurationModifier.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/factory/SocketServerServiceFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/org/im/service/server/factory/SocketServerServiceFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/NonBlockingSocketServerServiceImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/NonBlockingSocketServerServiceImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/SocketService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/SocketService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/AbsSocketChannelDispatcher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/AbsSocketChannelDispatcher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/SocketChannelDispatcherImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/controller/dispatcher/SocketChannelDispatcherImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/ClientServiceWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/ClientServiceWrapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/channel/ChannelImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/channel/ChannelImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/UserAuthorizationHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/UserAuthorizationHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/connection/ClientConnectionManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/connection/ClientConnectionManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/GlobalCallbackWrapper.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MessageDecodeFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MessageDecodeFactory.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgClientImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgClientImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgOperatorDelegate.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/MsgOperatorDelegate.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/ResponseHandlerWrapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/ResponseHandlerWrapper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/UserAuthorizationResultHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/handler/UserAuthorizationResultHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/GlobalCallback.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/callback/GlobalCallback.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/session/P2PSessionOperator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/impl/session/P2PSessionOperator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/MsgClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/MsgClient.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/interfaces/OnReceiveResponseListener.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/utils/MsgClient.kt" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/kotlin/org/im/service/client/utils/MsgClient.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/src/main/java/org/im/service/Const.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/java/org/im/service/Const.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ClientTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ClientTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/ClientTest1.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/ClientTest1.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/Channel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/interfaces/Channel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/DynamicMessageQueue.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/message/queue/DynamicMessageQueue.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/TransportObj.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/Attachment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/Attachment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/LoginMessageImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/LoginMessageImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/Message.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/Message.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MessageImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MessageImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MsgAccount.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata/client/MsgAccount.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/JSON.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/JSON.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/Message.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/Message.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/utils/SocketChannel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +56,7 @@
         <option value="Kotlin Interface" />
         <option value="Kotlin Class" />
         <option value="Kotlin File" />
+        <option value="Kotlin Sealed Interface" />
       </list>
     </option>
   </component>
@@ -64,18 +81,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "jdk.selected.JAVA_MODULE": "1.8",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "inlay.hints"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;1.8&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/common/src/main/kotlin/org/im/service/metadata" />
@@ -103,6 +120,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="DynamicQueueTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DynamicQueueTestKt" />
+      <module name="IM-Service.test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ServerTestKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ServerTestKt" />
       <module name="IM-Service.test" />
@@ -122,6 +146,7 @@
         <item itemvalue="Kotlin.ClientTestKt" />
         <item itemvalue="Kotlin.ServerTestKt" />
         <item itemvalue="Kotlin.ClientTest1Kt" />
+        <item itemvalue="Kotlin.DynamicQueueTestKt" />
         <item itemvalue="Kotlin.SocketServiceTestKt" />
       </list>
     </recent_temporary>
@@ -170,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669811423014</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="结构优化">
+      <created>1669817784699</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669817784699</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -191,19 +223,21 @@
     <MESSAGE value="client端优化，单元测试多端连接跑通" />
     <MESSAGE value="崩溃修改" />
     <MESSAGE value="ignore文件修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="ignore文件修改" />
+    <MESSAGE value="结构优化" />
+    <option name="LAST_COMMIT_MESSAGE" value="结构优化" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.nio.channels.ClosedChannelException" package="java.nio.channels" />
-          <option name="timeStamp" value="132" />
-        </breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/ClientTest1.kt</url>
-          <line>32</line>
-          <option name="timeStamp" value="136" />
+          <url>file://$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/RequestHandlerWrapper.kt</url>
+          <line>18</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/Server/src/main/kotlin/org/im/service/server/impl/handler/RequestHandlerWrapper.kt</url>
+          <line>19</line>
+          <option name="timeStamp" value="147" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

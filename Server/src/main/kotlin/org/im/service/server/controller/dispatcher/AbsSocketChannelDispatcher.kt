@@ -7,6 +7,8 @@ import java.nio.channels.SelectionKey
 import java.nio.channels.Selector
 import java.nio.channels.ServerSocketChannel
 import java.nio.channels.SocketChannel
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.thread
 
 /**
  * @author: liuzhongao
@@ -15,6 +17,23 @@ import java.nio.channels.SocketChannel
 abstract class AbsSocketChannelDispatcher: SocketChannelDispatcher {
 
     private val byteBuffer: ByteBuffer = ByteBuffer.allocate(10240)
+    private val acceptMessageSelector: Selector = Selector.open()
+
+    private val receiveMessageRunnable = Runnable {
+        val currentThread = Thread.currentThread()
+        while (currentThread.isAlive && !currentThread.isInterrupted) {
+            kotlin.runCatching {
+                acceptMessageSelector.select()
+            }.onFailure { it.printStackTrace() }
+            dispatch(acceptMessageSelector)
+        }
+    }
+
+    init {
+        thread {
+            receiveMessageRunnable.run()
+        }
+    }
 
     override fun dispatch(selector: Selector) {
         val selectionKeys = selector.selectedKeys().iterator()
@@ -36,6 +55,9 @@ abstract class AbsSocketChannelDispatcher: SocketChannelDispatcher {
             return
         }
         val clientChannel = socketServerChannel.accept()
+        if (selector == acceptMessageSelector) {
+            selector.wakeup()
+        }
         onAcceptConnection(selector, clientChannel)
     }
 

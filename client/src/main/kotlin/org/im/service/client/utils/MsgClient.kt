@@ -10,8 +10,8 @@ import org.json.JSONObject
  * @date: 2022/11/30 21:43
  */
 
-fun MsgClient.onConnectionEstablished(invocation: () -> Unit) {
-    addMessageCallback(object: IMMessageCallback {
+fun MsgClient.onConnectionEstablished(invocation: () -> Unit) = modification {
+    addIMMessageCallback(object: IMMessageCallback {
         override fun onNotify(code: Int, jsonObject: JSONObject?) {
             if (code == Const.Code.CONNECTION_ESTABLISHED) {
                 invocation()
@@ -20,8 +20,8 @@ fun MsgClient.onConnectionEstablished(invocation: () -> Unit) {
     })
 }
 
-fun MsgClient.onDisconnected(invocation: () -> Unit) {
-    addMessageCallback(object: IMMessageCallback {
+fun MsgClient.onDisconnected(invocation: () -> Unit) = modification {
+    addIMMessageCallback(object: IMMessageCallback {
         override fun onNotify(code: Int, jsonObject: JSONObject?) {
             if (code == Const.Code.SESSION_DISCONNECTED) {
                 invocation()

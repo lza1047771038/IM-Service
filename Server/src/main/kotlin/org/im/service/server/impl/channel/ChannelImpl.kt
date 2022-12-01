@@ -2,7 +2,7 @@ package org.im.service.server.impl.channel
 
 import org.im.service.interfaces.Channel
 import org.im.service.interfaces.IEncryptor
-import org.im.service.metadata.TransportObj
+import org.im.service.utils.DisconnectedCallback
 import org.im.service.utils.closeSilently
 import org.im.service.utils.readJSONFromRemote
 import org.im.service.utils.responseTo
@@ -20,6 +20,7 @@ class ChannelImpl(
 ) : Channel {
 
     private val clientSocketChannel: LinkedList<SocketChannel> = LinkedList()
+    private val disconnectedCallback: DisconnectedCallback = { removeChannel(this) }
 
     init {
         clientSocketChannel.add(socketChannel)
@@ -32,19 +33,11 @@ class ChannelImpl(
         val retList = LinkedList<JSONObject?>()
         synchronized(clientSocketChannel) {
             for (socketChannel in clientSocketChannel) {
-                val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
+                val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor, disconnectedCallback)
                 retList.addAll(clientRequests)
             }
         }
         return retList
-    }
-
-    override fun writeResponse(response: TransportObj) {
-        clientSocketChannel.forEach { socketChannel ->
-            socketChannel.responseTo(response) {
-                closeSilently()
-            }
-        }
     }
 
     override fun writeResponse(jsonObject: JSONObject) {

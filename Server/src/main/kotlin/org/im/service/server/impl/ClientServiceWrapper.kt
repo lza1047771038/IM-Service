@@ -3,6 +3,7 @@ package org.im.service.server.impl
 import org.im.service.interfaces.Channel
 import org.im.service.interfaces.ClientService
 import org.im.service.server.impl.channel.ChannelImpl
+import org.im.service.utils.DisconnectedCallback
 import java.nio.channels.SocketChannel
 import java.util.concurrent.ConcurrentHashMap
 

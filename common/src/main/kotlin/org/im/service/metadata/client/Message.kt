@@ -25,7 +25,7 @@ interface Message {
 
     var attachment: Attachment?
 
-    interface Factory {
+    interface DecodeFactory {
         fun decode(jsonObject: JSONObject): Message?
     }
 }

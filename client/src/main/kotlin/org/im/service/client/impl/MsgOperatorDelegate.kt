@@ -2,12 +2,9 @@ package org.im.service.client.impl
 
 import org.im.service.client.interfaces.SessionOperator
 import org.im.service.client.utils.IMUserInfo
-import org.im.service.metadata.TransportObj
 import org.im.service.metadata.client.Message
-import org.im.service.metadata.fromUser
-import org.im.service.metadata.fromUserId
 import org.im.service.utils.sendRequest
-import org.im.service.utils.toTransportObj
+import org.im.service.utils.toJSONObj
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
 
@@ -26,7 +23,7 @@ abstract class MsgSessionDelegate: SessionOperator {
         message.fromUserId = IMUserInfo.selfUserId
         message.fromUser = IMUserInfo.selfAccount
         synchronized(writeBuffer) {
-            channel.sendRequest(writeBuffer, message.toTransportObj())
+            channel.sendRequest(writeBuffer, message.toJSONObj())
         }
     }
 }

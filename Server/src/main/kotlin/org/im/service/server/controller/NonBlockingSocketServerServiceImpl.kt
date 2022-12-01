@@ -12,12 +12,9 @@ import java.nio.channels.SelectionKey
 import java.nio.channels.Selector
 import java.nio.channels.ServerSocketChannel
 
-class NonBlockingSocketServerServiceImpl(
+internal class NonBlockingSocketServerServiceImpl(
     private val address: String,
     override val port: Int,
-    private val encryptor: IEncryptor,
-    private val requestHandler: RequestHandler,
-    private val messageQueue: MessageQueue,
     private val dispatcher: SocketChannelDispatcher
 ) : SocketServerService {
 

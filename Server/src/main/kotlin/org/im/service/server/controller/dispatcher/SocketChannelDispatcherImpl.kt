@@ -4,6 +4,7 @@ import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.RequestHandler
 import org.im.service.message.queue.interfaces.MessageQueue
 import org.im.service.message.queue.interfaces.execute
+import org.im.service.utils.DisconnectedCallback
 import org.im.service.utils.method
 import org.im.service.utils.readJSONFromRemote
 import java.nio.ByteBuffer
@@ -15,14 +16,15 @@ import java.nio.channels.SocketChannel
  */
 class SocketChannelDispatcherImpl(
     private val messageQueue: MessageQueue,
-    private val requestHandler: RequestHandler
+    private val requestHandler: RequestHandler,
+    private val disconnectedCallback: DisconnectedCallback
 ) : AbsSocketChannelDispatcher() {
 
     var encryptor: IEncryptor? = null
 
     override fun onAcceptReadable(byteBuffer: ByteBuffer, socketChannel: SocketChannel) {
         messageQueue.execute {
-            val clientMessages = socketChannel.readJSONFromRemote(byteBuffer, encryptor)
+            val clientMessages = socketChannel.readJSONFromRemote(byteBuffer, encryptor, disconnectedCallback)
             clientMessages.forEach { message ->
                 if (message != null) {
                     val method = message.method

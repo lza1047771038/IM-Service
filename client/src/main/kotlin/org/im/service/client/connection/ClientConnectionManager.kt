@@ -97,7 +97,6 @@ internal class ClientConnectionManager(
     }
 
     private var lastThread: Thread? = null
-    private var receiveResponseListener: OnReceiveResponseListener? = null
 
     fun connect(imInitConfig: IMInitConfig) {
         this.imInitConfig = imInitConfig
@@ -109,10 +108,6 @@ internal class ClientConnectionManager(
         lastThread?.interrupt()
         lastThread = Thread(threadRunnable, threadName)
         lastThread?.start()
-    }
-
-    fun setOnReceiveResponseListener(receiveResponseListener: OnReceiveResponseListener) {
-        this.receiveResponseListener = receiveResponseListener
     }
 
     fun authorization(): MsgAuthorization = msgAuthorization

@@ -1,6 +1,5 @@
 package org.im.service.interfaces
 
-import org.im.service.metadata.TransportObj
 import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -11,7 +10,6 @@ import java.nio.channels.SocketChannel
  */
 interface Channel {
     fun readRequest(byteBuffer: ByteBuffer, encryptor: IEncryptor): List<JSONObject?>
-    fun writeResponse(response: TransportObj)
     fun writeResponse(jsonObject: JSONObject)
     fun hasLiveClients(): Boolean
     fun containsChannel(socketChannel: SocketChannel): Boolean

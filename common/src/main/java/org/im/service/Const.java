@@ -2,26 +2,26 @@ package org.im.service;
 
 public interface Const {
     interface Param {
-        String PARAM_USER_SESSION_ID = "sessionId";
+        String PARAM_USER_SESSION_ID = "sid"; // string
 
-        String PARAM_CONTENT = "content";
+        String PARAM_CONTENT = "c"; // string
 
-        String PARAM_METHOD = "method";
-        String PARAM_TO_USER = "toUser";
-        String PARAM_FROM_USER = "fromUser";
-        String PARAM_TO_USER_ID = "toUserId";
-        String PARAM_FROM_USER_ID = "fromUserId";
-        String PARAM_UUID = "uuid";
-        String PARAM_REMOTE_EXTENSION = "removeExt";
-        String PARAM_CLIENT_EXTENSION = "clientExt";
-        String PARAM_TYPE = "type";
-        String PARAM_ATTACHMENT = "attachment";
-        String PARAM_SESSION_TYPE = "sessionType";
+        String PARAM_METHOD = "m"; // string
+        String PARAM_TO_USER = "tu"; // obj
+        String PARAM_FROM_USER = "fu"; // obj
+        String PARAM_TO_USER_ID = "tuid"; // string
+        String PARAM_FROM_USER_ID = "fuid"; // string
+        String PARAM_UUID = "uuid"; // string
+        String PARAM_REMOTE_EXTENSION = "rext"; // map
+        String PARAM_CLIENT_EXTENSION = "cext"; // map
+        String PARAM_TYPE = "t"; // int
+        String PARAM_ATTACHMENT = "atmt"; // String
+        String PARAM_SESSION_TYPE = "st"; // int
     }
 
     interface Method {
-        String USER_AUTHORIZATION = "user.authorization.token";
-        String MESSAGE_TEXT = "message.text";
+        String USER_AUTHORIZATION = "uato";
+        String MESSAGE_TEXT = "mstx";
     }
 
     interface Code {

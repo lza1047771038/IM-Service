@@ -2,8 +2,6 @@ package org.im.service.utils
 
 import org.im.service.interfaces.IEncryptor
 import org.im.service.log.logDebug
-import org.im.service.metadata.TransportObj
-import org.im.service.metadata.toJson
 import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -12,7 +10,7 @@ private val decoder = Charsets.UTF_8
 
 typealias DisconnectedCallback = SocketChannel.() -> Unit
 
-fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?): ByteArray? {
+fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?, disconnectedCallback: DisconnectedCallback): ByteArray? {
     if (byteBuffer == null || !isConnected || !isOpen) {
         return null
     }
@@ -20,7 +18,7 @@ fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?): ByteArray? {
         byteBuffer.clear()
 
         kotlin.runCatching {
-            var flag = 0
+            var flag: Int
             while (true) {
                 flag = read(byteBuffer)
                 if (flag == 0 || flag == -1) {
@@ -28,14 +26,12 @@ fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?): ByteArray? {
                 }
             }
             if (flag == -1) {
-                close()
+                closeSilently()
+                disconnectedCallback.invoke(this)
             }
         }.onFailure { outerException ->
-            kotlin.runCatching {
-                close()
-            }.onFailure { innerException ->
-                innerException.printStackTrace()
-            }
+            closeSilently()
+            disconnectedCallback.invoke(this)
             outerException.printStackTrace()
         }
         byteBuffer.flip()
@@ -52,6 +48,7 @@ fun SocketChannel.writeToTarget(
             disconnectedCallback()
             return@runCatching
         }
+        // wait until channel connected
         while (!finishConnect()) {
         }
         if (!isConnected) {
@@ -70,11 +67,6 @@ fun SocketChannel.writeToTarget(
     }
 }
 
-fun SocketChannel.responseTo(response: TransportObj, disconnectedCallback: DisconnectedCallback = {}) {
-    val serializedString = response.toJson()
-    responseTo(serializedString, disconnectedCallback)
-}
-
 fun SocketChannel.responseTo(response: JSONObject, disconnectedCallback: DisconnectedCallback = {}) {
     responseTo(response.toString(), disconnectedCallback)
 }
@@ -82,19 +74,6 @@ fun SocketChannel.responseTo(response: JSONObject, disconnectedCallback: Disconn
 fun SocketChannel.responseTo(response: String, disconnectedCallback: DisconnectedCallback = {}) {
     val serializedString = "${response}\n"
     val byteBuffer = ByteBuffer.wrap(serializedString.encodeToByteArray())
-    writeToTarget(byteBuffer, disconnectedCallback)
-}
-
-fun SocketChannel.sendRequest(
-    buffer: ByteBuffer?,
-    request: TransportObj,
-    disconnectedCallback: DisconnectedCallback = {}
-) {
-    val serializedString = request.toJson()
-    val byteBuffer = buffer ?: ByteBuffer.wrap(serializedString.encodeToByteArray())
-    byteBuffer.clear()
-    byteBuffer.put(serializedString.encodeToByteArray())
-    byteBuffer.flip()
     writeToTarget(byteBuffer, disconnectedCallback)
 }
 
@@ -111,8 +90,8 @@ fun SocketChannel.sendRequest(
     writeToTarget(byteBuffer, disconnectedCallback)
 }
 
-fun SocketChannel.readJSONFromRemote(byteBuffer: ByteBuffer?, encryptor: IEncryptor?): List<JSONObject?> {
-    val decodeByteArray = decodeByteArray(byteBuffer)
+fun SocketChannel.readJSONFromRemote(byteBuffer: ByteBuffer?, encryptor: IEncryptor?, disconnectedCallback: DisconnectedCallback = {}): List<JSONObject?> {
+    val decodeByteArray = decodeByteArray(byteBuffer, disconnectedCallback)
     if (decodeByteArray == null || decodeByteArray.isEmpty()) {
         return emptyList()
     }

@@ -3,7 +3,6 @@ package org.im.service.client.impl
 import org.im.service.client.connection.ClientConnectionManager
 import org.im.service.client.impl.handler.ResponseHandlerWrapper
 import org.im.service.client.interfaces.*
-import org.im.service.client.interfaces.callback.GlobalCallback
 import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.metadata.client.IMInitConfig
 import org.im.service.metadata.client.Message
@@ -25,20 +24,8 @@ internal class MsgClientImpl internal constructor(): MsgClient {
         connectionManager.connect(imConfig)
     }
 
-    override fun addMessageCallback(callback: IMMessageCallback) {
-        sessionCallback.addCallback(callback)
-    }
-
-    override fun removeMessageCallback(callback: IMMessageCallback) {
-        sessionCallback.removeCallback(callback)
-    }
-
-    override fun setOnReceiveResponseListener(onReceiveResponseListener: OnReceiveResponseListener) {
-        connectionManager.setOnReceiveResponseListener(onReceiveResponseListener)
-    }
-
-    override fun addFactory(factory: Message.Factory) {
-        messageDecodeFactory.addDecodeFactory(factory)
+    override fun modification(invocation: ModificationHandler) {
+        ClientConfigurationModifier.newModifier(sessionCallback, messageDecodeFactory).invocation()
     }
 
     override fun authorization(): MsgAuthorization = connectionManager.authorization()

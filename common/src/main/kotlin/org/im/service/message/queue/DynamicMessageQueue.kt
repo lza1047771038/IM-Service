@@ -20,7 +20,6 @@ class DynamicMessageQueue: MessageQueue {
         innerMessageQueue.offer(message)
         condition.signal()
         reentrantLock.unlock()
-
         // notify probably waiting threads
     }
 

@@ -6,8 +6,7 @@ import org.im.service.metadata.SessionType
  * @author: liuzhongao
  * @date: 2022/11/29 19:58
  */
-internal open class MessageImpl: Message {
-    override val uuid: String = ""
+internal open class MessageImpl(override val uuid: String): Message {
     override var textContent: String = ""
     override var fromUserId: String = ""
     override var toUserId: String = ""

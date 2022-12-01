@@ -1,13 +1,8 @@
 package org.im.service.client.impl.session
 
 import org.im.service.client.interfaces.SessionOperator
-import org.im.service.client.utils.IMUserInfo
-import org.im.service.metadata.TransportObj
 import org.im.service.metadata.client.Message
 import org.im.service.metadata.client.MsgAccount
-import org.im.service.metadata.fromUser
-import org.im.service.metadata.fromUserId
-import org.im.service.metadata.toUser
 
 /**
  * @author: liuzhongao

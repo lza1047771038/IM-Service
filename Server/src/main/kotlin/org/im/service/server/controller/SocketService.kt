@@ -8,18 +8,21 @@ import org.im.service.server.controller.dispatcher.SocketChannelDispatcherImpl
 import org.im.service.server.factory.SocketServerServiceFactory
 import org.im.service.server.impl.ClientServiceWrapper
 import org.im.service.server.impl.handler.RequestHandlerWrapper
+import org.im.service.utils.DisconnectedCallback
 
 class SocketService {
-    private val serverWrapper: SocketServersWrapper by lazy { SocketServersWrapper() }
-    private val messageQueue: MessageQueue by lazy { MessageQueueImpl(3) }
-    private val clientService: ClientService by lazy { ClientServiceWrapper() }
-    private val requestWrapper: RequestHandler by lazy { RequestHandlerWrapper(clientService) }
-    private val channelDispatcher: SocketChannelDispatcherImpl by lazy { SocketChannelDispatcherImpl(messageQueue, requestWrapper) }
+    private val serverWrapper by lazy { SocketServersWrapper() }
+    private val messageQueue by lazy { MessageQueueImpl(3) }
+    private val clientService by lazy { ClientServiceWrapper() }
+    private val requestWrapper by lazy { RequestHandlerWrapper(clientService) }
+    private val channelDispatcher by lazy { SocketChannelDispatcherImpl(messageQueue, requestWrapper, disconnectedCallback) }
+
+    private val disconnectedCallback: DisconnectedCallback = { clientService.removeClient(this) }
 
     @Synchronized
     fun init(config: SocketConfig) {
         channelDispatcher.encryptor = config.encryptor
-        serverWrapper.init(config, requestWrapper, messageQueue, channelDispatcher)
+        serverWrapper.init(config, channelDispatcher)
         serverWrapper.start()
     }
 }
@@ -35,13 +38,12 @@ class SocketServersWrapper {
             field = value
         }
 
-    fun init(config: SocketConfig, requestHandler: RequestHandler, messageQueue: MessageQueue, socketServiceDispatcher: SocketChannelDispatcher) {
+    fun init(config: SocketConfig, socketServiceDispatcher: SocketChannelDispatcher) {
         val ports: IntArray = config.ports
-        val encryptor: IEncryptor = config.encryptor
         val socketServers = HashMap<Int, SocketServerService>()
 
         for (port in ports) {
-            val socketServerService = SocketServerServiceFactory.create(config.address, port, encryptor, requestHandler, messageQueue, socketServiceDispatcher)
+            val socketServerService = SocketServerServiceFactory.create(config.address, port, socketServiceDispatcher)
             socketServers[socketServerService.port] = socketServerService
         }
 
