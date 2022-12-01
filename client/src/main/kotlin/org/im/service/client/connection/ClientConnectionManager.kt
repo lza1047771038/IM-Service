@@ -5,6 +5,7 @@ import org.im.service.client.impl.MsgSessionDelegate
 import org.im.service.client.interfaces.*
 import org.im.service.client.interfaces.callback.GlobalCallback
 import org.im.service.client.interfaces.callback.IMMessageCallback
+import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
@@ -43,7 +44,9 @@ internal class ClientConnectionManager(
             }
 
             if (!socketChannel.isOpen) {
-                messageCallback.onNotify(Const.Code.SESSION_DISCONNECTED, null)
+                val wrapper = NotifyWrapper()
+                wrapper.code = Const.Code.SESSION_DISCONNECTED
+                messageCallback.onNotify(wrapper)
                 break
             }
 
@@ -55,7 +58,9 @@ internal class ClientConnectionManager(
                     selectionKey == null || !selectionKey.isValid -> continue
                     selectionKey.isConnectable -> {
                         socketChannel.register(selector, SelectionKey.OP_READ)
-                        messageCallback.onNotify(Const.Code.CONNECTION_ESTABLISHED, null)
+                        val wrapper = NotifyWrapper()
+                        wrapper.code = Const.Code.CONNECTION_ESTABLISHED
+                        messageCallback.onNotify(wrapper)
                     }
                     selectionKey.isReadable -> {
                         val responseJSONObjects = socketChannel.readJSONFromRemote(receiveBuffer, encryptor)
@@ -70,7 +75,7 @@ internal class ClientConnectionManager(
             }
         }
     }
-    private val sessionOperatorDelegate = object: MsgSessionDelegate() {
+    private val sessionOperatorDelegate = object: MsgSessionDelegate(messageCallback) {
         override val channel: SocketChannel
             get() = socketChannel
         override val writeBuffer: ByteBuffer

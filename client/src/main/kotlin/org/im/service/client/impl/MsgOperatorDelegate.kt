@@ -1,6 +1,7 @@
 package org.im.service.client.impl
 
 import org.im.service.client.interfaces.SessionOperator
+import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.metadata.client.Message
 import org.im.service.utils.sendRequest
@@ -12,7 +13,9 @@ import java.nio.channels.SocketChannel
  * @author: liuzhongao
  * @date: 2022/11/29 15:06
  */
-abstract class MsgSessionDelegate: SessionOperator {
+abstract class MsgSessionDelegate(
+    private val imMessageCallback: IMMessageCallback
+): SessionOperator {
 
     abstract val channel: SocketChannel
 

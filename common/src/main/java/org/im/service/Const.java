@@ -22,6 +22,7 @@ public interface Const {
     interface Method {
         String USER_AUTHORIZATION = "uato";
         String MESSAGE_TEXT = "mstx";
+        String MESSAGE_STATE_UPDATE = "msu";
     }
 
     interface Code {
@@ -29,6 +30,7 @@ public interface Const {
         int SESSION_AUTHORIZATION_SUCCESS = 2;
         int SESSION_DISCONNECTED = 3;
         int MESSAGE_RECEIVED = 4;
+        int MESSAGE_UPDATE = 5;
     }
 }
 

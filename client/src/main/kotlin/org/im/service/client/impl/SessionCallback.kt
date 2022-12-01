@@ -1,7 +1,7 @@
 package org.im.service.client.impl
 
 import org.im.service.client.interfaces.callback.IMMessageCallback
-import org.json.JSONObject
+import org.im.service.client.metadata.NotifyWrapper
 
 /**
  * @author: liuzhongao
@@ -24,10 +24,10 @@ class SessionCallback: IMMessageCallback {
         callbacks.remove(callback)
     }
 
-    override fun onNotify(code: Int, jsonObject: JSONObject?) {
+    override fun onNotify(wrapper: NotifyWrapper?) {
         val iterator = callbacks.iterator()
         while (iterator.hasNext()) {
-            iterator.next().onNotify(code, jsonObject)
+            iterator.next().onNotify(wrapper)
         }
     }
 }

@@ -3,7 +3,7 @@ package org.im.service.client.utils
 import org.im.service.Const
 import org.im.service.client.interfaces.MsgClient
 import org.im.service.client.interfaces.callback.IMMessageCallback
-import org.json.JSONObject
+import org.im.service.client.metadata.NotifyWrapper
 
 /**
  * @author: liuzhongao
@@ -12,8 +12,8 @@ import org.json.JSONObject
 
 fun MsgClient.onConnectionEstablished(invocation: () -> Unit) = modification {
     addIMMessageCallback(object: IMMessageCallback {
-        override fun onNotify(code: Int, jsonObject: JSONObject?) {
-            if (code == Const.Code.CONNECTION_ESTABLISHED) {
+        override fun onNotify(wrapper: NotifyWrapper?) {
+            if (wrapper?.code == Const.Code.CONNECTION_ESTABLISHED) {
                 invocation()
             }
         }
@@ -22,8 +22,8 @@ fun MsgClient.onConnectionEstablished(invocation: () -> Unit) = modification {
 
 fun MsgClient.onDisconnected(invocation: () -> Unit) = modification {
     addIMMessageCallback(object: IMMessageCallback {
-        override fun onNotify(code: Int, jsonObject: JSONObject?) {
-            if (code == Const.Code.SESSION_DISCONNECTED) {
+        override fun onNotify(wrapper: NotifyWrapper?) {
+            if (wrapper?.code == Const.Code.SESSION_DISCONNECTED) {
                 invocation()
             }
         }

@@ -9,6 +9,7 @@ import java.nio.channels.SocketChannel
 private val decoder = Charsets.UTF_8
 
 typealias DisconnectedCallback = SocketChannel.() -> Unit
+typealias OnError = (Throwable) -> Unit
 
 fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?, disconnectedCallback: DisconnectedCallback): ByteArray? {
     if (byteBuffer == null || !isConnected || !isOpen) {
@@ -41,7 +42,8 @@ fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?, disconnectedCallback:
 
 fun SocketChannel.writeToTarget(
     byteBuffer: ByteBuffer,
-    disconnectedCallback: (SocketChannel.() -> Unit)
+    disconnectedCallback: DisconnectedCallback,
+    onError: OnError
 ) {
     kotlin.runCatching {
         if (!isOpen) {
@@ -61,33 +63,33 @@ fun SocketChannel.writeToTarget(
         }
     }.onFailure { e ->
         e.printStackTrace()
-        kotlin.runCatching {
-            close()
-        }.onFailure { it.printStackTrace() }
+        closeSilently()
+        onError(e)
     }
 }
 
-fun SocketChannel.responseTo(response: JSONObject, disconnectedCallback: DisconnectedCallback = {}) {
-    responseTo(response.toString(), disconnectedCallback)
+fun SocketChannel.responseTo(response: JSONObject, disconnectedCallback: DisconnectedCallback = {}, onError: OnError = {}) {
+    responseTo(response.toString(), disconnectedCallback, onError)
 }
 
-fun SocketChannel.responseTo(response: String, disconnectedCallback: DisconnectedCallback = {}) {
+fun SocketChannel.responseTo(response: String, disconnectedCallback: DisconnectedCallback = {}, onError: OnError = {}) {
     val serializedString = "${response}\n"
     val byteBuffer = ByteBuffer.wrap(serializedString.encodeToByteArray())
-    writeToTarget(byteBuffer, disconnectedCallback)
+    writeToTarget(byteBuffer, disconnectedCallback, onError)
 }
 
 fun SocketChannel.sendRequest(
     buffer: ByteBuffer?,
     request: JSONObject,
-    disconnectedCallback: DisconnectedCallback = {}
+    disconnectedCallback: DisconnectedCallback = {},
+    onError: OnError = {}
 ) {
     val serializedString = "${request}\n"
     val byteBuffer = buffer ?: ByteBuffer.wrap(serializedString.encodeToByteArray())
     byteBuffer.clear()
     byteBuffer.put(serializedString.encodeToByteArray())
     byteBuffer.flip()
-    writeToTarget(byteBuffer, disconnectedCallback)
+    writeToTarget(byteBuffer, disconnectedCallback, onError)
 }
 
 fun SocketChannel.readJSONFromRemote(byteBuffer: ByteBuffer?, encryptor: IEncryptor?, disconnectedCallback: DisconnectedCallback = {}): List<JSONObject?> {

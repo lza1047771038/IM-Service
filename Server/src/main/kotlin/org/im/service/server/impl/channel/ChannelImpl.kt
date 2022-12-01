@@ -42,9 +42,9 @@ class ChannelImpl(
 
     override fun writeResponse(jsonObject: JSONObject) {
         clientSocketChannel.forEach { socketChannel ->
-            socketChannel.responseTo(jsonObject) {
+            socketChannel.responseTo(jsonObject, disconnectedCallback = {
                 closeSilently()
-            }
+            })
         }
     }
 

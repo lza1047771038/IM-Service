@@ -2,6 +2,7 @@ package org.im.service.client.impl
 
 import org.im.service.Const
 import org.im.service.client.interfaces.callback.IMMessageCallback
+import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.interfaces.ResponseHandler
 import org.im.service.log.logger
 import org.im.service.utils.fromUser
@@ -18,6 +19,10 @@ class MessageHandler(
 ): ResponseHandler {
     override fun handle(method: String, jsonObject: JSONObject) {
         logger.log("MessageReceiver", "receive message from: ${jsonObject.fromUserId}, content: ${jsonObject.textContent}")
-        messageCallback.onNotify(Const.Code.MESSAGE_RECEIVED, jsonObject)
+
+        val wrapper = NotifyWrapper()
+        wrapper.code = Const.Code.MESSAGE_RECEIVED
+        wrapper.jsonObjects = listOf(jsonObject)
+        messageCallback.onNotify(wrapper)
     }
 }
