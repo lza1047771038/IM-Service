@@ -8,13 +8,13 @@ import org.json.JSONObject
  * @author: liuzhongao
  * @date: 2022/11/28 下午9:41
  */
-class MessageDecodeFactory: Message.DecodeFactory {
+class MessageParserFactoryWrapper: Message.ParserFactory {
 
-    fun addDecodeFactory(decodeFactory: Message.DecodeFactory) {
+    fun addDecodeFactory(parserFactory: Message.ParserFactory) {
 
     }
 
-    override fun decode(jsonObject: JSONObject): Message? {
+    override fun parse(jsonObject: JSONObject): Message? {
         logDebug("receive message: $jsonObject")
         return null
     }

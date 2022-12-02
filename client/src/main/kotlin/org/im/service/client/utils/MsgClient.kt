@@ -14,6 +14,7 @@ fun MsgClient.onConnectionEstablished(invocation: () -> Unit) = modification {
     addIMMessageCallback(object: IMMessageCallback {
         override fun onNotify(wrapper: NotifyWrapper?) {
             if (wrapper?.code == Const.Code.CONNECTION_ESTABLISHED) {
+                removeIMMessageCallback(this)
                 invocation()
             }
         }
@@ -24,6 +25,7 @@ fun MsgClient.onDisconnected(invocation: () -> Unit) = modification {
     addIMMessageCallback(object: IMMessageCallback {
         override fun onNotify(wrapper: NotifyWrapper?) {
             if (wrapper?.code == Const.Code.SESSION_DISCONNECTED) {
+                removeIMMessageCallback(this)
                 invocation()
             }
         }

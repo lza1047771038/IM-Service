@@ -1,7 +1,9 @@
 package org.im.service.client.impl
 
+import org.im.service.Const
 import org.im.service.client.interfaces.SessionOperator
 import org.im.service.client.interfaces.callback.IMMessageCallback
+import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.client.utils.IMUserInfo
 import org.im.service.metadata.client.Message
 import org.im.service.utils.sendRequest
@@ -26,7 +28,26 @@ abstract class MsgSessionDelegate(
         message.fromUserId = IMUserInfo.selfUserId
         message.fromUser = IMUserInfo.selfAccount
         synchronized(writeBuffer) {
-            channel.sendRequest(writeBuffer, message.toJSONObj())
+            channel.sendRequest(
+                buffer = writeBuffer,
+                request = message.toJSONObj(),
+                sendSuccess = {
+                    val notifyWrapper = NotifyWrapper()
+                    notifyWrapper.code = Const.Code.MESSAGE_SEND_SUCCESS
+                    notifyWrapper.messages = listOf(message)
+                    imMessageCallback.onNotify(notifyWrapper)
+                },
+                onError = {
+                    val notifyWrapper = NotifyWrapper()
+                    notifyWrapper.code = Const.Code.MESSAGE_SEND_ERROR
+                    notifyWrapper.messages = listOf(message)
+                    imMessageCallback.onNotify(notifyWrapper)
+                }
+            )
         }
+    }
+
+    override fun deleteMessage(message: Message) {
+
     }
 }

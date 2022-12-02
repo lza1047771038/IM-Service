@@ -11,6 +11,7 @@ import org.im.service.utils.createTextMessage
  */
 interface SessionOperator {
     fun sendMessage(message: Message)
+    fun deleteMessage(message: Message)
 }
 
 fun SessionOperator.sendTextMessage(content: String, sessionType: SessionType) {

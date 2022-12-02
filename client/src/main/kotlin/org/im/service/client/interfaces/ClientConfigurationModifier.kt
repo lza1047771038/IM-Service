@@ -1,8 +1,11 @@
 package org.im.service.client.interfaces
 
-import org.im.service.client.impl.MessageDecodeFactory
+import org.im.service.client.impl.MessageAttachmentFactoryWrapper
+import org.im.service.client.impl.MessageParserFactoryWrapper
 import org.im.service.client.impl.SessionCallback
+import org.im.service.client.impl.handler.ResponseHandlerWrapper
 import org.im.service.client.interfaces.callback.IMMessageCallback
+import org.im.service.interfaces.ResponseHandler
 import org.im.service.metadata.client.Message
 
 /**
@@ -14,24 +17,35 @@ typealias ModificationHandler = ClientConfigurationModifier.() -> Unit
 sealed interface ClientConfigurationModifier {
     companion object {
         @JvmStatic
-        fun newModifier(sessionCallback: SessionCallback, decodeFactoryWrapper: MessageDecodeFactory): ClientConfigurationModifier {
-            return ClientConfigurationModifierImpl(sessionCallback, decodeFactoryWrapper)
+        fun newModifier(sessionCallback: SessionCallback, decodeFactoryWrapper: MessageParserFactoryWrapper, responseHandler: ResponseHandlerWrapper, attachmentParserFactory: MessageAttachmentFactoryWrapper): ClientConfigurationModifier {
+            return ClientConfigurationModifierImpl(sessionCallback, decodeFactoryWrapper, responseHandler, attachmentParserFactory)
         }
     }
 
     fun addIMMessageCallback(callback: IMMessageCallback)
     fun removeIMMessageCallback(callback: IMMessageCallback)
 
-    fun addFactory(factory: Message.DecodeFactory)
-    fun removeFactory(factory: Message.DecodeFactory)
+    fun addFactory(factory: Message.ParserFactory)
+    fun removeFactory(factory: Message.ParserFactory)
 
-    fun addFactory(type: Int, factory: Message.DecodeFactory)
-    fun removeFactory(type: Int)
+    fun addFactory(type: Int, factory: Message.ParserFactory)
+    fun removeMessageFactory(type: Int)
+
+    fun addFactory(factory: Message.AttachmentParserFactory)
+    fun removeFactory(factory: Message.AttachmentParserFactory)
+
+    fun addFactory(type: Int, factory: Message.AttachmentParserFactory)
+    fun removeAttachmentFactory(type: Int)
+
+    fun addResponseHandler(method: String, handler: ResponseHandler)
+    fun removeResponseHandler(method: String)
 }
 
 private class ClientConfigurationModifierImpl(
     private val sessionCallback: SessionCallback,
-    private val decodeFactoryWrapper: MessageDecodeFactory
+    private val decodeFactoryWrapper: MessageParserFactoryWrapper,
+    private val responseHandler: ResponseHandlerWrapper,
+    private val attachmentParserFactory: MessageAttachmentFactoryWrapper
 ): ClientConfigurationModifier {
     override fun addIMMessageCallback(callback: IMMessageCallback) {
         sessionCallback.addCallback(callback)
@@ -41,20 +55,45 @@ private class ClientConfigurationModifierImpl(
         sessionCallback.removeCallback(callback)
     }
 
-    override fun addFactory(factory: Message.DecodeFactory) {
+    override fun addFactory(factory: Message.ParserFactory) {
         decodeFactoryWrapper.addDecodeFactory(factory)
     }
 
-    override fun addFactory(type: Int, factory: Message.DecodeFactory) {
-
+    override fun addFactory(type: Int, factory: Message.ParserFactory) {
+        TODO("need override")
     }
 
-    override fun removeFactory(factory: Message.DecodeFactory) {
-
+    override fun removeFactory(factory: Message.ParserFactory) {
+        TODO("need override")
     }
 
-    override fun removeFactory(type: Int) {
+    override fun removeMessageFactory(type: Int) {
+        TODO("need override")
+    }
 
+    // message attachment
+    override fun addFactory(factory: Message.AttachmentParserFactory) {
+        attachmentParserFactory.addFactory(factory)
+    }
+
+    override fun addFactory(type: Int, factory: Message.AttachmentParserFactory) {
+        TODO("need override")
+    }
+
+    override fun removeFactory(factory: Message.AttachmentParserFactory) {
+        TODO("need override")
+    }
+
+    override fun removeAttachmentFactory(type: Int) {
+        TODO("need override")
+    }
+
+    override fun addResponseHandler(method: String, handler: ResponseHandler) {
+        responseHandler.addHandler(method, handler)
+    }
+
+    override fun removeResponseHandler(method: String) {
+        responseHandler.removeHandler(method)
     }
 
     override fun equals(other: Any?): Boolean {

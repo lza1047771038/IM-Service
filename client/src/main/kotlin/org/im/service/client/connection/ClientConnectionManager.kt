@@ -117,6 +117,7 @@ internal class ClientConnectionManager(
     fun authorization(): MsgAuthorization = msgAuthorization
 
     override fun sendMessage(message: Message) = sessionOperatorDelegate.sendMessage(message)
+    override fun deleteMessage(message: Message) = sessionOperatorDelegate.deleteMessage(message)
 
     fun disconnect() {
         selector.closeSilently()

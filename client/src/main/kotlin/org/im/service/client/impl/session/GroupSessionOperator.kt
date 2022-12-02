@@ -6,17 +6,17 @@ import org.im.service.metadata.client.MsgAccount
 
 /**
  * @author: liuzhongao
- * @date: 2022/11/29 13:56
+ * @date: 2022/12/2 09:54
  */
-class P2PSessionOperator(
+class GroupSessionOperator(
     private val targetUserSessionId: String,
     private val rawSessionOperator: SessionOperator
 ): SessionOperator {
 
-    private val toUserAccount by lazy { MsgAccount(targetUserSessionId) }
+    private val toGroupAccount by lazy { MsgAccount(targetUserSessionId) }
 
     override fun sendMessage(message: Message) {
-        message.toUser = toUserAccount
+        message.toUser = toGroupAccount
         rawSessionOperator.sendMessage(message)
     }
 

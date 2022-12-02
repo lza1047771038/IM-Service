@@ -7,5 +7,6 @@ import org.im.service.metadata.SessionType
  * @date: 2022/11/29 13:57
  */
 interface MsgOperator {
-    fun openSession(sessionId: String, type: SessionType): SessionOperator
+    fun openSession(sessionId: String): SessionOperator
+    fun closeSession(sessionId: String)
 }

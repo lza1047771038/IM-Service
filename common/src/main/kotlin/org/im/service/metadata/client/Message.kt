@@ -25,7 +25,11 @@ interface Message {
 
     var attachment: Attachment?
 
-    interface DecodeFactory {
-        fun decode(jsonObject: JSONObject): Message?
+    interface ParserFactory {
+        fun parse(jsonObject: JSONObject): Message?
+    }
+
+    interface AttachmentParserFactory {
+        fun parse(jsonObject: JSONObject): Attachment?
     }
 }

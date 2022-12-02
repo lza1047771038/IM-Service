@@ -31,6 +31,8 @@ public interface Const {
         int SESSION_DISCONNECTED = 3;
         int MESSAGE_RECEIVED = 4;
         int MESSAGE_UPDATE = 5;
+        int MESSAGE_SEND_ERROR = 6;
+        int MESSAGE_SEND_SUCCESS = 7;
     }
 }
 
