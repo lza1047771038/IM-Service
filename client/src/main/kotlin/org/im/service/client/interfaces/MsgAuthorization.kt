@@ -1,6 +1,6 @@
 package org.im.service.client.interfaces
 
-import org.im.service.metadata.client.LoginParams
+import org.im.service.client.metadata.LoginParams
 
 /**
  * @author: liuzhongao

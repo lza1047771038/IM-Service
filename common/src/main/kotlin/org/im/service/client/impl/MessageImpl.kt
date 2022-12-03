@@ -1,6 +1,10 @@
-package org.im.service.metadata.client
+package org.im.service.client.impl
 
-import org.im.service.metadata.SessionType
+import org.im.service.client.interfaces.Attachment
+import org.im.service.client.interfaces.Message
+import org.im.service.client.metadata.MsgAccount
+import org.im.service.client.metadata.MsgType
+import org.im.service.client.metadata.SessionType
 
 /**
  * @author: liuzhongao

@@ -9,34 +9,34 @@ import org.im.service.server.factory.SocketServerServiceFactory
 import org.im.service.server.impl.ClientServiceWrapper
 import org.im.service.server.impl.handler.RequestHandlerWrapper
 import org.im.service.utils.DisconnectedCallback
+import java.util.concurrent.ConcurrentHashMap
 
 class SocketService {
     private val serverWrapper by lazy { SocketServersWrapper() }
-    private val messageQueue by lazy { MessageQueueImpl(3) }
     private val clientService by lazy { ClientServiceWrapper() }
     private val requestWrapper by lazy { RequestHandlerWrapper(clientService) }
-    private val channelDispatcher by lazy { SocketChannelDispatcherImpl(messageQueue, requestWrapper, disconnectedCallback) }
 
     private val disconnectedCallback: DisconnectedCallback = { clientService.removeClient(this) }
 
+    private var messageQueue: MessageQueue? = null
+    private var channelDispatcher: SocketChannelDispatcher? = null
+
     @Synchronized
     fun init(config: SocketConfig) {
+        val messageQueue = config.messageQueue
+        val channelDispatcher = SocketChannelDispatcherImpl(messageQueue, requestWrapper, disconnectedCallback)
         channelDispatcher.encryptor = config.encryptor
         serverWrapper.init(config, channelDispatcher)
         serverWrapper.start()
+
+        this.messageQueue = config.messageQueue
+        this.channelDispatcher = channelDispatcher
     }
 }
 
 class SocketServersWrapper {
-    private var socketServersMutable: Boolean = true
 
-    private var socketServers: Map<Int, SocketServerService> = mapOf()
-        private set(value) {
-            if (!socketServersMutable) {
-                return
-            }
-            field = value
-        }
+    private val socketServers: MutableMap<Int, SocketServerService> = ConcurrentHashMap()
 
     fun init(config: SocketConfig, socketServiceDispatcher: SocketChannelDispatcher) {
         val ports: IntArray = config.ports
@@ -47,8 +47,7 @@ class SocketServersWrapper {
             socketServers[socketServerService.port] = socketServerService
         }
 
-        this.socketServers = socketServers
-        this.socketServersMutable = false
+        this.socketServers.putAll(socketServers)
     }
 
     fun start() {

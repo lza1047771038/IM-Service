@@ -4,15 +4,15 @@ import org.im.service.Const
 import org.im.service.client.impl.MsgSessionDelegate
 import org.im.service.client.interfaces.*
 import org.im.service.client.interfaces.callback.IMMessageCallback
-import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.client.utils.IMUserInfo
+import org.im.service.client.utils.notifySingleType
 import org.im.service.impl.NoEncryptor
 import org.im.service.interfaces.IEncryptor
 import org.im.service.interfaces.ResponseHandler
 import org.im.service.log.logger
-import org.im.service.metadata.client.IMInitConfig
-import org.im.service.metadata.client.LoginParams
-import org.im.service.metadata.client.Message
+import org.im.service.client.metadata.IMInitConfig
+import org.im.service.client.metadata.LoginParams
+import org.im.service.client.interfaces.Message
 import org.im.service.utils.*
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -28,14 +28,21 @@ internal class ClientConnectionManager(
 
     private val threadName = "${this.javaClass.simpleName}-thread-0"
 
-    private val socketChannel: SocketChannel by lazy { SocketChannel.open() }
-    private val receiveBuffer: ByteBuffer by lazy { ByteBuffer.allocate(10240) }
-    private val selector: Selector by lazy { Selector.open() }
     private val encryptor: IEncryptor = NoEncryptor()
+    private val receiveBuffer: ByteBuffer by lazy { ByteBuffer.allocate(10240) }
+
+    private var selector: Selector? = null
+    private var socketChannel: SocketChannel? = null
 
     private val threadRunnable = Runnable {
         val currentThread = Thread.currentThread()
         while (currentThread.isAlive && !currentThread.isInterrupted) {
+            val selector = this.selector
+            val socketChannel = this.socketChannel
+            if (selector == null || socketChannel == null) {
+                break
+            }
+
             kotlin.runCatching {
                 selector.select()
             }.onFailure { exception ->
@@ -43,9 +50,7 @@ internal class ClientConnectionManager(
             }
 
             if (!socketChannel.isOpen) {
-                val wrapper = NotifyWrapper()
-                wrapper.code = Const.Code.SESSION_DISCONNECTED
-                messageCallback.onNotify(wrapper)
+                messageCallback.notifySingleType(Const.Code.SESSION_DISCONNECTED)
                 break
             }
 
@@ -57,9 +62,7 @@ internal class ClientConnectionManager(
                     selectionKey == null || !selectionKey.isValid -> continue
                     selectionKey.isConnectable -> {
                         socketChannel.register(selector, SelectionKey.OP_READ)
-                        val wrapper = NotifyWrapper()
-                        wrapper.code = Const.Code.CONNECTION_ESTABLISHED
-                        messageCallback.onNotify(wrapper)
+                        messageCallback.notifySingleType(Const.Code.CONNECTION_ESTABLISHED)
                     }
                     selectionKey.isReadable -> {
                         val responseJSONObjects = socketChannel.readJSONFromRemote(receiveBuffer, encryptor)
@@ -75,7 +78,7 @@ internal class ClientConnectionManager(
         }
     }
     private val sessionOperatorDelegate = object: MsgSessionDelegate(messageCallback) {
-        override val channel: SocketChannel
+        override val channel: SocketChannel?
             get() = socketChannel
         override val writeBuffer: ByteBuffer
             get() = receiveBuffer
@@ -83,13 +86,19 @@ internal class ClientConnectionManager(
 
     private val msgAuthorization = object: MsgAuthorization {
         override fun login(params: LoginParams): Boolean {
+            val socketChannel = this@ClientConnectionManager.socketChannel
+            if (socketChannel == null) {
+                logger.log("Authorization", "please call ClientConnectionManager#init first, before login")
+                return false
+            }
+
             if (!socketChannel.isOpen) {
                 logger.log("Authorization", "connect not established, skip current operation.")
                 return false
             }
             while (!socketChannel.finishConnect()) {}
             IMUserInfo.selfUserId = params.uid
-            IMUserInfo.selfSessionId = params.userToken
+            IMUserInfo.selfSessionId = params.sessionId
             val message = createLoginMessage()
             sendMessage(message)
             return true
@@ -104,10 +113,15 @@ internal class ClientConnectionManager(
 
     fun connect(imInitConfig: IMInitConfig) {
         this.imInitConfig = imInitConfig
+        val socketChannel = SocketChannel.open()
+        val selector = Selector.open()
         val address = InetSocketAddress(imInitConfig.serverAddress, imInitConfig.port)
         socketChannel.configureBlocking(false)
         socketChannel.register(selector, SelectionKey.OP_CONNECT)
         socketChannel.connect(address)
+
+        this.socketChannel = socketChannel
+        this.selector = selector
 
         lastThread?.interrupt()
         lastThread = Thread(threadRunnable, threadName)
@@ -120,8 +134,10 @@ internal class ClientConnectionManager(
     override fun deleteMessage(message: Message) = sessionOperatorDelegate.deleteMessage(message)
 
     fun disconnect() {
-        selector.closeSilently()
-        socketChannel.closeSilently()
+        selector?.closeSilently()
+        socketChannel?.closeSilently()
         receiveBuffer.reset()
+        selector = null
+        socketChannel = null
     }
 }

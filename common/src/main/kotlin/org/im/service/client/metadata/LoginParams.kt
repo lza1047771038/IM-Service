@@ -1,4 +1,4 @@
-package org.im.service.metadata.client
+package org.im.service.client.metadata
 
 /**
  * @author: liuzhongao
@@ -6,5 +6,5 @@ package org.im.service.metadata.client
  */
 class LoginParams {
     var uid: String = ""
-    var userToken: String = ""
+    var sessionId: String = ""
 }

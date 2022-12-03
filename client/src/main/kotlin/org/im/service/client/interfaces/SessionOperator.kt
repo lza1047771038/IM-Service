@@ -1,8 +1,6 @@
 package org.im.service.client.interfaces
 
-import org.im.service.metadata.SessionType
-import org.im.service.metadata.client.Message
-import org.im.service.utils.createEmptyMessage
+import org.im.service.client.metadata.SessionType
 import org.im.service.utils.createTextMessage
 
 /**

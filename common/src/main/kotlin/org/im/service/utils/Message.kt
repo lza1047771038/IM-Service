@@ -1,11 +1,11 @@
 package org.im.service.utils
 
 import org.im.service.Const
-import org.im.service.metadata.*
-import org.im.service.metadata.client.LoginMessageImpl
-import org.im.service.metadata.client.Message
-import org.im.service.metadata.client.MessageImpl
-import org.im.service.metadata.client.MsgType
+import org.im.service.client.impl.LoginMessageImpl
+import org.im.service.client.interfaces.Message
+import org.im.service.client.impl.MessageImpl
+import org.im.service.client.metadata.MsgType
+import org.im.service.client.metadata.SessionType
 import org.json.JSONObject
 import java.util.UUID
 

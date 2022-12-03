@@ -33,6 +33,7 @@ public interface Const {
         int MESSAGE_UPDATE = 5;
         int MESSAGE_SEND_ERROR = 6;
         int MESSAGE_SEND_SUCCESS = 7;
+        int SESSION_AUTHORIZATION_FAILED = 8;
     }
 }
 

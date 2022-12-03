@@ -1,6 +1,6 @@
 package org.im.service.client.utils
 
-import org.im.service.metadata.client.MsgAccount
+import org.im.service.client.metadata.MsgAccount
 
 /**
  * @author: liuzhongao

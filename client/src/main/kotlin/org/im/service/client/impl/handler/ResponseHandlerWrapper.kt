@@ -5,7 +5,6 @@ import org.im.service.client.impl.MessageHandler
 import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.interfaces.ResponseHandler
 import org.im.service.log.logDebug
-import org.im.service.metadata.client.Message
 import org.json.JSONObject
 
 /**

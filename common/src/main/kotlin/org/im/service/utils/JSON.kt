@@ -1,9 +1,9 @@
 package org.im.service.utils
 
 import org.im.service.Const
-import org.im.service.metadata.client.Message
-import org.im.service.metadata.client.MsgType
-import org.im.service.metadata.client.createMsgTypeByCode
+import org.im.service.client.interfaces.Message
+import org.im.service.client.metadata.MsgType
+import org.im.service.client.metadata.createMsgTypeByCode
 import org.json.JSONObject
 
 /**
@@ -19,6 +19,9 @@ val JSONObject.isAuthorizationRequest: Boolean
 
 val JSONObject.content: JSONObject?
     get() = optJSONObject(Const.Param.PARAM_CONTENT)
+
+val JSONObject.sessionId: String?
+    get() = optString(Const.Param.PARAM_USER_SESSION_ID)
 
 val JSONObject.fromUserId: String
     get() = content?.optString(Const.Param.PARAM_FROM_USER_ID) ?: ""

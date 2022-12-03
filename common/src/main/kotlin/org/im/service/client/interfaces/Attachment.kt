@@ -1,4 +1,4 @@
-package org.im.service.metadata.client
+package org.im.service.client.interfaces
 
 import org.json.JSONObject
 

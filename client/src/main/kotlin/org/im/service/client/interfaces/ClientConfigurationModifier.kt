@@ -6,7 +6,6 @@ import org.im.service.client.impl.SessionCallback
 import org.im.service.client.impl.handler.ResponseHandlerWrapper
 import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.interfaces.ResponseHandler
-import org.im.service.metadata.client.Message
 
 /**
  * @author: liuzhongao

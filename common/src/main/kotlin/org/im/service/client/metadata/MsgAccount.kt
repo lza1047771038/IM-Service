@@ -1,4 +1,4 @@
-package org.im.service.metadata.client
+package org.im.service.client.metadata
 
 import org.im.service.Const
 import org.json.JSONObject

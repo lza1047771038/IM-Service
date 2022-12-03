@@ -1,6 +1,6 @@
 package org.im.service.client.metadata
 
-import org.im.service.metadata.client.Message
+import org.im.service.client.interfaces.Message
 import org.json.JSONObject
 
 /**

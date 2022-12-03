@@ -1,8 +1,8 @@
 package org.im.service.client.impl.session
 
 import org.im.service.client.interfaces.SessionOperator
-import org.im.service.metadata.client.Message
-import org.im.service.metadata.client.MsgAccount
+import org.im.service.client.interfaces.Message
+import org.im.service.client.metadata.MsgAccount
 
 /**
  * @author: liuzhongao

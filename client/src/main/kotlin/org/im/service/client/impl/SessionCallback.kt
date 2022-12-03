@@ -2,6 +2,7 @@ package org.im.service.client.impl
 
 import org.im.service.client.interfaces.callback.IMMessageCallback
 import org.im.service.client.metadata.NotifyWrapper
+import java.util.LinkedList
 
 /**
  * @author: liuzhongao
@@ -9,19 +10,26 @@ import org.im.service.client.metadata.NotifyWrapper
  */
 class SessionCallback: IMMessageCallback {
 
-    private val callbacks: MutableList<IMMessageCallback> = ArrayList()
+    private val callbacks: MutableList<IMMessageCallback> = LinkedList()
 
     fun addCallback(callback: IMMessageCallback) {
         if (callback is SessionCallback) {
             return
         }
         if (!callbacks.contains(callback)) {
-            callbacks.add(callback)
+            synchronized(callbacks) {
+                callbacks.add(callback)
+            }
         }
     }
 
     fun removeCallback(callback: IMMessageCallback) {
-        callbacks.remove(callback)
+        if (!callbacks.contains(callback)) {
+            return
+        }
+        synchronized(callbacks) {
+            callbacks.remove(callback)
+        }
     }
 
     override fun onNotify(wrapper: NotifyWrapper?) {

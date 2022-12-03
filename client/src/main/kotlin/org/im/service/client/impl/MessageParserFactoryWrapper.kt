@@ -1,7 +1,7 @@
 package org.im.service.client.impl
 
 import org.im.service.log.logDebug
-import org.im.service.metadata.client.Message
+import org.im.service.client.interfaces.Message
 import org.json.JSONObject
 
 /**

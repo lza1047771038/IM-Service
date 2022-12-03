@@ -1,7 +1,7 @@
 package org.im.service.client.impl
 
-import org.im.service.metadata.client.Attachment
-import org.im.service.metadata.client.Message
+import org.im.service.client.interfaces.Attachment
+import org.im.service.client.interfaces.Message
 import org.json.JSONObject
 
 /**

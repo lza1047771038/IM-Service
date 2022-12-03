@@ -33,6 +33,9 @@ class ChannelImpl(
         val retList = LinkedList<JSONObject?>()
         synchronized(clientSocketChannel) {
             for (socketChannel in clientSocketChannel) {
+                if (!socketChannel.isOpen || !socketChannel.isConnected) {
+                    continue
+                }
                 val clientRequests = socketChannel.readJSONFromRemote(byteBuffer, encryptor, disconnectedCallback)
                 retList.addAll(clientRequests)
             }
@@ -42,6 +45,9 @@ class ChannelImpl(
 
     override fun writeResponse(jsonObject: JSONObject) {
         clientSocketChannel.forEach { socketChannel ->
+            if (!socketChannel.isOpen || !socketChannel.isConnected) {
+                return@forEach
+            }
             socketChannel.responseTo(jsonObject, disconnectedCallback = {
                 closeSilently()
             })
@@ -83,6 +89,19 @@ class ChannelImpl(
                 val channel = iterator.next()
                 channel.closeSilently()
                 iterator.remove()
+            }
+        }
+    }
+
+    fun cleanRemoteSocket() {
+        synchronized(clientSocketChannel) {
+            val iterator = clientSocketChannel.iterator()
+            while (iterator.hasNext()) {
+                val channel = iterator.next()
+                if (!channel.isOpen || !channel.isConnected) {
+                    channel.closeSilently()
+                    iterator.remove()
+                }
             }
         }
     }

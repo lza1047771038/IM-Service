@@ -18,6 +18,7 @@ class ClientServiceWrapper: ClientService {
             val channel = clientSessionMap[sessionId]
             channel?.addChannel(socketChannel)
         }
+        cleanRemoteSocket()
     }
 
     override fun contains(key: String): Boolean {
@@ -46,6 +47,7 @@ class ClientServiceWrapper: ClientService {
     override fun removeClient(sessionId: String) {
         val exist = clientSessionMap.remove(sessionId)
         exist?.close()
+        cleanRemoteSocket()
     }
 
     override fun removeClient(socketChannel: SocketChannel) {
@@ -57,6 +59,16 @@ class ClientServiceWrapper: ClientService {
                 channel.removeChannel(socketChannel)
                 break
             }
+        }
+        cleanRemoteSocket()
+    }
+
+    private fun cleanRemoteSocket() {
+        val mapIterator = clientSessionMap.iterator()
+        while (mapIterator.hasNext()) {
+            val entry = mapIterator.next()
+            val channel = entry.value
+            channel.cleanRemoteSocket()
         }
     }
 }

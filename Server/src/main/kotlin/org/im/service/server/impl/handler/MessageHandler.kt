@@ -16,13 +16,13 @@ class MessageHandler(
     override fun handle(method: String, jsonObject: JSONObject, socketChannel: SocketChannel) {
         val toUserSessionId = jsonObject.toUserSessionId
         if (toUserSessionId.isEmpty()) {
-            logDebug("send message with empty user id token")
+            logger.log("MessageConsumer", "send message with empty user id token")
             return
         }
 
         val isUserOnline = clientService.contains(toUserSessionId)
         if (!isUserOnline) {
-            logDebug("user: $toUserSessionId is not online")
+            logger.log("MessageConsumer", "user: $toUserSessionId is not online")
             return
         }
 

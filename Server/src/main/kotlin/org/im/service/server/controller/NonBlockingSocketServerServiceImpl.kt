@@ -21,15 +21,20 @@ internal class NonBlockingSocketServerServiceImpl(
 
     private val threadName: String by lazy { "${this.javaClass.simpleName}-thread-${threadsCount++}" }
 
-    private val serverSocketChannel: ServerSocketChannel by lazy { ServerSocketChannel.open() }
-    private val serverSocket: ServerSocket by lazy { serverSocketChannel.socket() }
-    private val selector: Selector by lazy { Selector.open() }
+    private var serverSocketChannel: ServerSocketChannel? = null
+    private var serverSocket: ServerSocket? = null
+    private var selector: Selector? = null
 
     private var thread: Thread? = null
 
     private val threadOperation = Runnable {
         val currentThread = Thread.currentThread()
         while (currentThread.isAlive && !currentThread.isInterrupted) {
+            val selector = this.selector
+            if (selector == null || !selector.isOpen) {
+                break
+            }
+
             try {
                 selector.select()
             } catch (e: InterruptedException) {
@@ -42,10 +47,26 @@ internal class NonBlockingSocketServerServiceImpl(
     }
 
     override fun startListeningToTargetPort() {
+        val localThread = this.thread
+        if (localThread != null && localThread.isAlive) {
+            return
+        }
+
+        stopListeningToTargetPort()
+
+        val serverSocketChannel = ServerSocketChannel.open()
+        val serverSocket = serverSocketChannel.socket()
+        val selector = Selector.open()
+
         serverSocket.reuseAddress = true
         serverSocket.bind(InetSocketAddress(address, port))
         serverSocketChannel.configureBlocking(false)
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT)
+
+        this.serverSocketChannel = serverSocketChannel
+        this.serverSocket = serverSocket
+        this.selector = selector
+
         thread?.interrupt()
         thread = Thread(threadOperation, threadName)
         thread?.start()
@@ -54,8 +75,11 @@ internal class NonBlockingSocketServerServiceImpl(
     override fun stopListeningToTargetPort() {
         thread?.interrupt()
         thread = null
-        serverSocket.closeSilently()
-        serverSocketChannel.closeSilently()
-        selector.closeSilently()
+        serverSocket?.closeSilently()
+        serverSocketChannel?.closeSilently()
+        selector?.closeSilently()
+        serverSocket = null
+        serverSocketChannel = null
+        selector = null
     }
 }

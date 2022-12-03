@@ -1,6 +1,7 @@
 package org.im.service.client.interfaces
 
-import org.im.service.metadata.client.IMInitConfig
+import org.im.service.client.metadata.IMInitConfig
+import org.im.service.client.metadata.SessionType
 
 /**
  * @author: liuzhongao
@@ -14,7 +15,7 @@ interface MsgClient {
 
     fun authorization(): MsgAuthorization
 
-    fun msgOperator(): MsgOperator
+    fun msgOperator(sessionType: SessionType): MsgOperator
 
     fun disconnect()
 }

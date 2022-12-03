@@ -1,4 +1,4 @@
-package org.im.service.metadata
+package org.im.service.client.metadata
 
 /**
  * @author: liuzhongao
