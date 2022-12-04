@@ -7,6 +7,7 @@ import org.im.service.client.utils.IMUserInfo
 import org.im.service.client.utils.notifyMessages
 import org.im.service.log.logger
 import org.im.service.client.interfaces.Message
+import org.im.service.client.interfaces.MessageProgressCallback
 import org.im.service.utils.sendRequest
 import org.im.service.utils.toJSONObj
 import java.nio.ByteBuffer
@@ -26,6 +27,10 @@ abstract class MsgSessionDelegate(
 
     // append self user info
     override fun sendMessage(message: Message) {
+        sendMessage(message, null)
+    }
+
+    override fun sendMessage(message: Message, messageProgressCallback: MessageProgressCallback?) {
         message.fromUserId = IMUserInfo.selfUserId
         message.fromUser = IMUserInfo.selfAccount
 
@@ -41,9 +46,11 @@ abstract class MsgSessionDelegate(
                 buffer = writeBuffer,
                 request = message.toJSONObj(),
                 sendSuccess = {
+                    messageProgressCallback?.onSuccess(message)
                     imMessageCallback.notifyMessages(Const.Code.MESSAGE_SEND_SUCCESS, message)
                 },
                 onError = {
+                    messageProgressCallback?.onFailed(message, Exception(it))
                     imMessageCallback.notifyMessages(Const.Code.MESSAGE_SEND_ERROR, message)
                 }
             )

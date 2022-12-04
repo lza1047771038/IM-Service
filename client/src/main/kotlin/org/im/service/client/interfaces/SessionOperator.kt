@@ -9,6 +9,7 @@ import org.im.service.utils.createTextMessage
  */
 interface SessionOperator {
     fun sendMessage(message: Message)
+    fun sendMessage(message: Message, messageProgressCallback: MessageProgressCallback?)
     fun deleteMessage(message: Message)
 }
 

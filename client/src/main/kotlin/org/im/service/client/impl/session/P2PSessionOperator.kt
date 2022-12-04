@@ -2,6 +2,7 @@ package org.im.service.client.impl.session
 
 import org.im.service.client.interfaces.SessionOperator
 import org.im.service.client.interfaces.Message
+import org.im.service.client.interfaces.MessageProgressCallback
 import org.im.service.client.metadata.MsgAccount
 
 /**
@@ -15,12 +16,12 @@ class P2PSessionOperator(
 
     private val toUserAccount by lazy { MsgAccount(targetUserSessionId) }
 
-    override fun sendMessage(message: Message) {
+    override fun sendMessage(message: Message) = sendMessage(message, null)
+
+    override fun sendMessage(message: Message, messageProgressCallback: MessageProgressCallback?) {
         message.toUser = toUserAccount
-        rawSessionOperator.sendMessage(message)
+        rawSessionOperator.sendMessage(message, messageProgressCallback)
     }
 
-    override fun deleteMessage(message: Message) {
-
-    }
+    override fun deleteMessage(message: Message) = rawSessionOperator.deleteMessage(message)
 }
