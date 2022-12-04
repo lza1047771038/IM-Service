@@ -16,6 +16,7 @@ import java.util.*
  * @date: 2022/11/28 11:49
  */
 class ChannelImpl(
+    override val sessionId: String,
     socketChannel: SocketChannel
 ) : Channel {
 

@@ -1,6 +1,6 @@
 package org.im.service.common;
 
-import org.im.service.log.IMServiceLoggerKt;
+import org.im.service.log.LoggerImplKt;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public class ServiceFacade {
             if (existImpl == null) {
                 serviceImplementationMap.put(interfaceKey, impl);
             } else {
-                IMServiceLoggerKt.getLogger().log("ServiceFacade", "current impl: " + existImpl.getClass().getName() + " in ServiceFacade will be replaced with " + impl.getClass().getName() + ".");
+                LoggerImplKt.getLogger().log("ServiceFacade", "current impl: " + existImpl.getClass().getName() + " in ServiceFacade will be replaced with " + impl.getClass().getName() + ".");
                 serviceImplementationMap.put(interfaceKey, impl);
             }
         } else {

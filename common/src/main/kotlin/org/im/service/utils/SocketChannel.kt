@@ -1,7 +1,9 @@
 package org.im.service.utils
 
 import org.im.service.interfaces.IEncryptor
+import org.im.service.interfaces.Logger
 import org.im.service.log.logDebug
+import org.im.service.log.logger
 import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.nio.channels.SocketChannel
@@ -32,9 +34,9 @@ fun SocketChannel.decodeByteArray(byteBuffer: ByteBuffer?, disconnectedCallback:
                 disconnectedCallback.invoke(this)
             }
         }.onFailure { outerException ->
+            logger.log("socketException", "error with untouched socketChannel: ${socket().inetAddress.hostAddress}, exception: ${outerException.javaClass.name}", Logger.Type.Error)
             closeSilently()
             disconnectedCallback.invoke(this)
-            outerException.printStackTrace()
         }
         byteBuffer.flip()
         decoder.decode(byteBuffer).toString().encodeToByteArray()
@@ -65,6 +67,7 @@ fun SocketChannel.writeToTarget(
         }
         sendSuccess()
     }.onFailure { e ->
+        logger.log("socketException", "error with untouched socketChannel: ${socket().inetAddress.hostAddress}, exception: ${e.javaClass.name}", Logger.Type.Error)
         e.printStackTrace()
         closeSilently()
         onError(e)
@@ -112,7 +115,7 @@ private fun IEncryptor.decodeToJSONResponse(byteArray: ByteArray?): List<JSONObj
         kotlin.runCatching {
             JSONObject(splitResource)
         }.onFailure {
-            it.printStackTrace()
+            logger.log("Decoder", "decode json response error, resource: $decodeStringResource, splitResource: ${splitDecodeStringResource.joinToString()}", Logger.Type.Error)
         }.getOrNull()
     }
 }

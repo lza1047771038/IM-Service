@@ -2,11 +2,9 @@ package org.im.service.client.impl
 
 import org.im.service.Const
 import org.im.service.client.interfaces.callback.IMMessageCallback
-import org.im.service.client.metadata.NotifyWrapper
 import org.im.service.client.utils.notifySingleType
 import org.im.service.interfaces.ResponseHandler
 import org.im.service.log.logger
-import org.im.service.utils.fromUser
 import org.im.service.utils.fromUserId
 import org.im.service.utils.textContent
 import org.json.JSONObject

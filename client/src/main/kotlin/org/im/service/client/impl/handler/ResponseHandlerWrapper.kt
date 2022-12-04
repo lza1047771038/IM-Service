@@ -12,7 +12,7 @@ import org.json.JSONObject
  * @date: 2022/11/28 下午10:23
  */
 class ResponseHandlerWrapper(
-    private val callback: IMMessageCallback
+    callback: IMMessageCallback
 ): ResponseHandler {
 
     private val innerHandler: MutableMap<String, ResponseHandler> = HashMap()

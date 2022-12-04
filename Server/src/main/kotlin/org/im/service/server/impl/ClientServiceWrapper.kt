@@ -13,7 +13,7 @@ class ClientServiceWrapper: ClientService {
 
     override fun addClient(sessionId: String, socketChannel: SocketChannel) {
         if (!clientSessionMap.containsKey(sessionId)) {
-            clientSessionMap[sessionId] = ChannelImpl(socketChannel)
+            clientSessionMap[sessionId] = ChannelImpl(sessionId, socketChannel)
         } else {
             val channel = clientSessionMap[sessionId]
             channel?.addChannel(socketChannel)

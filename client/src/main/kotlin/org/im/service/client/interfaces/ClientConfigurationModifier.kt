@@ -58,34 +58,22 @@ private class ClientConfigurationModifierImpl(
         decodeFactoryWrapper.addDecodeFactory(factory)
     }
 
-    override fun addFactory(type: Int, factory: Message.ParserFactory) {
-        TODO("need override")
-    }
+    override fun addFactory(type: Int, factory: Message.ParserFactory) {}
 
-    override fun removeFactory(factory: Message.ParserFactory) {
-        TODO("need override")
-    }
+    override fun removeFactory(factory: Message.ParserFactory) {}
 
-    override fun removeMessageFactory(type: Int) {
-        TODO("need override")
-    }
+    override fun removeMessageFactory(type: Int) {}
 
     // message attachment
     override fun addFactory(factory: Message.AttachmentParserFactory) {
         attachmentParserFactory.addFactory(factory)
     }
 
-    override fun addFactory(type: Int, factory: Message.AttachmentParserFactory) {
-        TODO("need override")
-    }
+    override fun addFactory(type: Int, factory: Message.AttachmentParserFactory) {}
 
-    override fun removeFactory(factory: Message.AttachmentParserFactory) {
-        TODO("need override")
-    }
+    override fun removeFactory(factory: Message.AttachmentParserFactory) {}
 
-    override fun removeAttachmentFactory(type: Int) {
-        TODO("need override")
-    }
+    override fun removeAttachmentFactory(type: Int) {}
 
     override fun addResponseHandler(method: String, handler: ResponseHandler) {
         responseHandler.addHandler(method, handler)

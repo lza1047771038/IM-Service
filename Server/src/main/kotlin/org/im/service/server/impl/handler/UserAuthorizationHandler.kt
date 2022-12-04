@@ -14,8 +14,8 @@ class UserAuthorizationHandler(
 ) : RequestHandler {
 
     override fun handle(method: String, jsonObject: JSONObject, socketChannel: SocketChannel) {
-        logger.log("UserAuthorization", "accept login request from: ${jsonObject.fromUserId}, sessionId: ${jsonObject.fromUserSessionId}")
-        var clientSessionId = jsonObject.fromUserSessionId
+        logger.log("UserAuthorization", "accept login request from: ${jsonObject.fromUserId}, sessionId: ${jsonObject.fromSessionId}")
+        var clientSessionId = jsonObject.fromSessionId
         if (clientSessionId.isNotEmpty()) {
             clientService.addClient(clientSessionId, socketChannel)
         } else {

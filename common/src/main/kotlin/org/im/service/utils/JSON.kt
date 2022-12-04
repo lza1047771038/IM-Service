@@ -3,7 +3,9 @@ package org.im.service.utils
 import org.im.service.Const
 import org.im.service.client.interfaces.Message
 import org.im.service.client.metadata.MsgType
+import org.im.service.client.metadata.SessionType
 import org.im.service.client.metadata.createMsgTypeByCode
+import org.im.service.client.metadata.createSessionTypeByCode
 import org.json.JSONObject
 
 /**
@@ -35,10 +37,10 @@ val JSONObject.toUser: JSONObject?
 val JSONObject.fromUser: JSONObject?
     get() = content?.optJSONObject(Const.Param.PARAM_FROM_USER)
 
-val JSONObject.toUserSessionId: String
+val JSONObject.toSessionId: String
     get() = toUser?.optString(Const.Param.PARAM_USER_SESSION_ID) ?: ""
 
-val JSONObject.fromUserSessionId: String
+val JSONObject.fromSessionId: String
     get() = fromUser?.optString(Const.Param.PARAM_USER_SESSION_ID) ?: ""
 
 val JSONObject.textContent: String
@@ -55,6 +57,9 @@ val JSONObject.clientExtension: JSONObject?
 
 val JSONObject.type: MsgType
     get() = content?.optInt(Const.Param.PARAM_TYPE, 0)?.let { createMsgTypeByCode(it) } ?: MsgType.Unknown
+
+val JSONObject.sessionType: SessionType
+    get() = content?.optInt(Const.Param.PARAM_SESSION_TYPE, 0)?.let { createSessionTypeByCode(it) } ?: SessionType.Unknown
 
 val JSONObject.attachment: JSONObject?
     get() = content?.optJSONObject(Const.Param.PARAM_ATTACHMENT)

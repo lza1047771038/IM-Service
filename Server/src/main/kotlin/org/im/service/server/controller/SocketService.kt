@@ -7,6 +7,8 @@ import org.im.service.server.controller.config.SocketConfig
 import org.im.service.server.controller.dispatcher.SocketChannelDispatcherImpl
 import org.im.service.server.factory.SocketServerServiceFactory
 import org.im.service.server.impl.ClientServiceWrapper
+import org.im.service.server.impl.GroupServiceWrapper
+import org.im.service.server.impl.channel.GroupChannelImpl
 import org.im.service.server.impl.handler.RequestHandlerWrapper
 import org.im.service.utils.DisconnectedCallback
 import java.util.concurrent.ConcurrentHashMap
@@ -14,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap
 class SocketService {
     private val serverWrapper by lazy { SocketServersWrapper() }
     private val clientService by lazy { ClientServiceWrapper() }
-    private val requestWrapper by lazy { RequestHandlerWrapper(clientService) }
+    private val groupService by lazy { GroupServiceWrapper(clientService) }
+    private val requestWrapper by lazy { RequestHandlerWrapper(clientService, groupService) }
 
     private val disconnectedCallback: DisconnectedCallback = { clientService.removeClient(this) }
 
