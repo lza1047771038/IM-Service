@@ -4,6 +4,7 @@ import org.im.service.Const
 import org.im.service.client.impl.LoginMessageImpl
 import org.im.service.client.interfaces.Message
 import org.im.service.client.impl.MessageImpl
+import org.im.service.client.metadata.MsgAccount
 import org.im.service.client.metadata.MsgType
 import org.im.service.client.metadata.SessionType
 import org.json.JSONObject
@@ -16,6 +17,10 @@ import java.util.UUID
 
 fun createEmptyMessage(): Message {
     val uuid = UUID.randomUUID().toString()
+    return createEmptyMessage(uuid)
+}
+
+fun createEmptyMessage(uuid: String): Message {
     return MessageImpl(uuid)
 }
 

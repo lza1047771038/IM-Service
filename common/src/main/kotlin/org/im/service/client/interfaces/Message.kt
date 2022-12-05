@@ -4,12 +4,13 @@ import org.im.service.client.metadata.MsgAccount
 import org.im.service.client.metadata.MsgType
 import org.im.service.client.metadata.SessionType
 import org.json.JSONObject
+import java.io.Serializable
 
 /**
  * @author: liuzhongao
  * @date: 2022/11/28 14:14
  */
-interface Message {
+interface Message: Serializable {
     val uuid: String
     var textContent: String
 
@@ -27,11 +28,7 @@ interface Message {
 
     var attachment: Attachment?
 
-    interface ParserFactory {
-        fun parse(jsonObject: JSONObject): Message?
-    }
-
     interface AttachmentParserFactory {
-        fun parse(jsonObject: JSONObject): Attachment?
+        fun parse(jsonObject: JSONObject?): Attachment?
     }
 }

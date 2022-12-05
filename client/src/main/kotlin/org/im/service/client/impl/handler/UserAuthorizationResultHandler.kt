@@ -17,7 +17,8 @@ class UserAuthorizationResultHandler(
     private val callback: IMMessageCallback
 ): ResponseHandler {
     override fun handle(method: String, jsonObject: JSONObject) {
-        val sessionId = jsonObject.remoteExtension?.sessionId
+        val remoteExtString = jsonObject.remoteExtension
+        val sessionId = remoteExtString?.let { kotlin.runCatching { JSONObject(it) }.getOrNull() }?.sessionId
         if (sessionId.isNullOrEmpty()) {
             callback.notifyJSONObjects(Const.Code.SESSION_AUTHORIZATION_FAILED, jsonObject)
         } else {

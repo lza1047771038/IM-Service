@@ -22,7 +22,8 @@ import java.nio.channels.SocketChannel
 
 internal class ClientConnectionManager(
     private val responseHandler: ResponseHandler,
-    private val messageCallback: IMMessageCallback
+    private val messageCallback: IMMessageCallback,
+    private val attachmentParserFactory: Message.AttachmentParserFactory
 ): SessionOperator {
     private var imInitConfig: IMInitConfig? = null
 

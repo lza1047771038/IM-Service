@@ -18,7 +18,7 @@ import java.nio.channels.SocketChannel
  * @date: 2022/11/29 15:06
  */
 abstract class MsgSessionDelegate(
-    private val imMessageCallback: IMMessageCallback
+    private val imMessageCallback: IMMessageCallback,
 ): SessionOperator {
 
     abstract val channel: SocketChannel?
@@ -60,4 +60,5 @@ abstract class MsgSessionDelegate(
     override fun deleteMessage(message: Message) {
 
     }
+
 }

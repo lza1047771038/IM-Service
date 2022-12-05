@@ -18,7 +18,10 @@ fun main() {
     val address = networkAddress?.hostAddress ?: "127.0.0.1"
     val port = 8080
 
-    val clientConfig = IMInitConfig()
+    val clientConfig = IMInitConfig.Builder()
+        .setAddress(address)
+        .setPort(port)
+        .build()
     clientConfig.serverAddress = address
     clientConfig.port = port
 

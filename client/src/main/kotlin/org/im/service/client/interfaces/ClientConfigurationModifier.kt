@@ -1,7 +1,6 @@
 package org.im.service.client.interfaces
 
 import org.im.service.client.impl.MessageAttachmentFactoryWrapper
-import org.im.service.client.impl.MessageParserFactoryWrapper
 import org.im.service.client.impl.SessionCallback
 import org.im.service.client.impl.handler.ResponseHandlerWrapper
 import org.im.service.client.interfaces.callback.IMMessageCallback
@@ -16,19 +15,13 @@ typealias ModificationHandler = ClientConfigurationModifier.() -> Unit
 sealed interface ClientConfigurationModifier {
     companion object {
         @JvmStatic
-        fun newModifier(sessionCallback: SessionCallback, decodeFactoryWrapper: MessageParserFactoryWrapper, responseHandler: ResponseHandlerWrapper, attachmentParserFactory: MessageAttachmentFactoryWrapper): ClientConfigurationModifier {
-            return ClientConfigurationModifierImpl(sessionCallback, decodeFactoryWrapper, responseHandler, attachmentParserFactory)
+        fun newModifier(sessionCallback: SessionCallback, responseHandler: ResponseHandlerWrapper, attachmentParserFactory: MessageAttachmentFactoryWrapper): ClientConfigurationModifier {
+            return ClientConfigurationModifierImpl(sessionCallback, responseHandler, attachmentParserFactory)
         }
     }
 
     fun addIMMessageCallback(callback: IMMessageCallback)
     fun removeIMMessageCallback(callback: IMMessageCallback)
-
-    fun addFactory(factory: Message.ParserFactory)
-    fun removeFactory(factory: Message.ParserFactory)
-
-    fun addFactory(type: Int, factory: Message.ParserFactory)
-    fun removeMessageFactory(type: Int)
 
     fun addFactory(factory: Message.AttachmentParserFactory)
     fun removeFactory(factory: Message.AttachmentParserFactory)
@@ -42,7 +35,6 @@ sealed interface ClientConfigurationModifier {
 
 private class ClientConfigurationModifierImpl(
     private val sessionCallback: SessionCallback,
-    private val decodeFactoryWrapper: MessageParserFactoryWrapper,
     private val responseHandler: ResponseHandlerWrapper,
     private val attachmentParserFactory: MessageAttachmentFactoryWrapper
 ): ClientConfigurationModifier {
@@ -53,16 +45,6 @@ private class ClientConfigurationModifierImpl(
     override fun removeIMMessageCallback(callback: IMMessageCallback) {
         sessionCallback.removeCallback(callback)
     }
-
-    override fun addFactory(factory: Message.ParserFactory) {
-        decodeFactoryWrapper.addDecodeFactory(factory)
-    }
-
-    override fun addFactory(type: Int, factory: Message.ParserFactory) {}
-
-    override fun removeFactory(factory: Message.ParserFactory) {}
-
-    override fun removeMessageFactory(type: Int) {}
 
     // message attachment
     override fun addFactory(factory: Message.AttachmentParserFactory) {

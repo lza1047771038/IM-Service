@@ -14,7 +14,7 @@ class MessageAttachmentFactoryWrapper: Message.AttachmentParserFactory {
 
     }
 
-    override fun parse(jsonObject: JSONObject): Attachment? {
+    override fun parse(jsonObject: JSONObject?): Attachment? {
         return null
     }
 }
