@@ -11,7 +11,7 @@ import org.im.service.client.interfaces.SessionOperator
  * @author: liuzhongao
  * @date: 2022/11/29 13:59
  */
-class P2PMessageOperator(
+internal class P2PMessageOperator(
     private val rawSessionOperator: SessionOperator
 ): MsgOperator {
     override fun openSession(sessionId: String): SessionOperator {
@@ -25,7 +25,7 @@ class P2PMessageOperator(
     override fun deleteMessage(message: Message) = rawSessionOperator.deleteMessage(message)
 }
 
-class GroupMessageOperator(
+internal class GroupMessageOperator(
     private val rawSessionOperator: SessionOperator
 ): MsgOperator {
     override fun openSession(sessionId: String): SessionOperator {

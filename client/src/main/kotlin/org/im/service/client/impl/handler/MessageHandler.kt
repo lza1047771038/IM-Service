@@ -16,7 +16,7 @@ import org.json.JSONObject
  * @author: liuzhongao
  * @date: 2022/11/30 21:40
  */
-class MessageHandler(
+internal class MessageHandler(
     private val messageCallback: IMMessageCallback,
     private val attachmentParserFactory: Message.AttachmentParserFactory
 ): ResponseHandler {

@@ -9,7 +9,7 @@ import org.im.service.client.metadata.MsgAccount
  * @author: liuzhongao
  * @date: 2022/12/2 09:54
  */
-class GroupSessionOperator(
+internal class GroupSessionOperator(
     private val targetUserSessionId: String,
     private val rawSessionOperator: SessionOperator
 ): SessionOperator {

@@ -13,7 +13,7 @@ import org.json.JSONObject
  * @author: liuzhongao
  * @date: 2022/11/28 下午10:45
  */
-class UserAuthorizationResultHandler(
+internal class UserAuthorizationResultHandler(
     private val callback: IMMessageCallback
 ): ResponseHandler {
     override fun handle(method: String, jsonObject: JSONObject) {

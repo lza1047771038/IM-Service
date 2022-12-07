@@ -8,7 +8,7 @@ import java.util.LinkedList
  * @author: liuzhongao
  * @date: 2022/11/30 21:22
  */
-class SessionCallback: IMMessageCallback {
+internal class SessionCallback: IMMessageCallback {
 
     private val callbacks: MutableList<IMMessageCallback> = LinkedList()
 

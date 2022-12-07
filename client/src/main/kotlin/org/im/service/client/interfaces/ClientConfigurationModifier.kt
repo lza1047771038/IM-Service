@@ -14,8 +14,7 @@ typealias ModificationHandler = ClientConfigurationModifier.() -> Unit
 
 sealed interface ClientConfigurationModifier {
     companion object {
-        @JvmStatic
-        fun newModifier(sessionCallback: SessionCallback, responseHandler: ResponseHandlerWrapper, attachmentParserFactory: MessageAttachmentFactoryWrapper): ClientConfigurationModifier {
+        internal fun newModifier(sessionCallback: SessionCallback, responseHandler: ResponseHandlerWrapper, attachmentParserFactory: MessageAttachmentFactoryWrapper): ClientConfigurationModifier {
             return ClientConfigurationModifierImpl(sessionCallback, responseHandler, attachmentParserFactory)
         }
     }

@@ -9,7 +9,7 @@ import org.im.service.client.metadata.MsgAccount
  * @author: liuzhongao
  * @date: 2022/11/29 13:56
  */
-class P2PSessionOperator(
+internal class P2PSessionOperator(
     private val targetUserSessionId: String,
     private val rawSessionOperator: SessionOperator
 ): SessionOperator {

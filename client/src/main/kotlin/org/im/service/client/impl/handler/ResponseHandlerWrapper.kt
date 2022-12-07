@@ -11,7 +11,7 @@ import org.json.JSONObject
  * @author: liuzhongao
  * @date: 2022/11/28 下午10:23
  */
-class ResponseHandlerWrapper(
+internal class ResponseHandlerWrapper(
     callback: IMMessageCallback,
     attachmentParserFactory: Message.AttachmentParserFactory
 ): ResponseHandler {
