@@ -1,11 +1,9 @@
 package org.im.service.utils
 
+import com.sun.tools.classfile.ConstantPool.CONSTANT_Class_info
 import org.im.service.Const
 import org.im.service.client.interfaces.Message
-import org.im.service.client.metadata.MsgType
-import org.im.service.client.metadata.SessionType
-import org.im.service.client.metadata.createMsgTypeByCode
-import org.im.service.client.metadata.createSessionTypeByCode
+import org.im.service.client.metadata.*
 import org.json.JSONObject
 
 /**
@@ -33,7 +31,8 @@ import org.json.JSONObject
  *
  * Spring可忽略
  */
-val JSONObject.method: String
+var JSONObject.method: String
+    set(value) { put(Const.Param.PARAM_METHOD, value) }
     get() = optString(Const.Param.PARAM_METHOD)
 
 /**
@@ -101,7 +100,8 @@ val JSONObject.uuid: String
 /**
  * 服务端扩展字段，由服务端设置，为json序列化的字符串
  */
-val JSONObject.remoteExtension: String?
+var JSONObject.remoteExtension: String?
+    set(value) { content?.put(Const.Param.PARAM_REMOTE_EXTENSION, value) }
     get() = content?.optString(Const.Param.PARAM_REMOTE_EXTENSION)
 
 /**
@@ -116,6 +116,10 @@ val JSONObject.clientExtension: String?
 val JSONObject.type: MsgType
     get() = content?.optInt(Const.Param.PARAM_TYPE, 0)?.let { createMsgTypeByCode(it) } ?: MsgType.Unknown
 
+var JSONObject.msgState: MsgState
+    set(value) { content?.put(Const.Param.PARAM_STATE, value.code) }
+    get() = content?.optInt(Const.Param.PARAM_STATE, 0)?.let { createMsgStateThroughCode(it) } ?: MsgState.Unknown
+
 /**
  * 会话类型，可参考[SessionType]
  */
@@ -127,6 +131,27 @@ val JSONObject.sessionType: SessionType
  */
 val JSONObject.attachment: String?
     get() = content?.optString(Const.Param.PARAM_ATTACHMENT)
+
+/**
+ * 更新参数
+ */
+fun JSONObject.updateRemoteExtensionsThroughMap(updateFunc: MutableMap<String, Any?>.() -> Unit) = synchronized(this) {
+    val remoteJSONObject = remoteExtension.takeIf { !it.isNullOrEmpty() }
+        ?.let { remoteJson -> kotlin.runCatching { JSONObject(remoteJson) }.getOrElse { JSONObject() } }
+    val mutableMap = remoteJSONObject?.toMap()
+    mutableMap?.updateFunc()
+    remoteExtension = mutableMap?.let{ notNullMap -> JSONObject(notNullMap) }?.toString()
+}
+
+/**
+ * 更新参数
+ */
+fun JSONObject.updateRemoteExtensionsThroughJSONObject(updateFunc: JSONObject.() -> Unit) = synchronized(this) {
+    val remoteJSONObject = remoteExtension.takeIf { !it.isNullOrEmpty() }
+        ?.let { remoteJson -> kotlin.runCatching { JSONObject(remoteJson) }.getOrElse { JSONObject() } }
+    remoteJSONObject?.updateFunc()
+    remoteExtension = remoteJSONObject?.toString()
+}
 
 internal fun JSONObject.parseIMMessage(method: String, message: Message) = apply {
     val content = JSONObject()

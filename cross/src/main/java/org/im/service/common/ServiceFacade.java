@@ -2,6 +2,7 @@ package org.im.service.common;
 
 import org.im.service.log.LoggerImplKt;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceFacade {
 
     private static final Map<Class<?>, Object> serviceImplementationMap = new ConcurrentHashMap<>();
+
+    private static boolean debug = false;
+
+    public static void setDebug(boolean debug) {
+        ServiceFacade.debug = debug;
+    }
 
     public static <T, R extends T> void put(final Class<T> interfaceKey, final R impl) {
         if (serviceImplementationMap.containsKey(interfaceKey)) {
@@ -24,12 +31,17 @@ public class ServiceFacade {
         }
     }
 
-    @NotNull
+    @Nullable
     public static <T> T get(final Class<T> interfaceKey) {
         final Object nowExistImpl = serviceImplementationMap.get(interfaceKey);
         if (nowExistImpl == null) {
-            throw new NullPointerException("impl for interface: " + interfaceKey.getName() + " is not initialized, please call ServiceFacade#put to add your own implementation.");
+            if (debug) {
+                throw new NullPointerException("impl for interface: " + interfaceKey.getName() + " is not initialized, please call ServiceFacade#put to add your own implementation.");
+            } else {
+                return null;
+            }
+        } else {
+            return (T) nowExistImpl;
         }
-        return (T) nowExistImpl;
     }
 }

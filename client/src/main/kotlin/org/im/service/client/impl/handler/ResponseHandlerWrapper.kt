@@ -21,6 +21,7 @@ internal class ResponseHandlerWrapper(
     init {
         innerHandler[Const.Method.USER_AUTHORIZATION] = UserAuthorizationResultHandler(callback)
         innerHandler[Const.Method.MESSAGE_TEXT] = MessageHandler(callback, attachmentParserFactory)
+        innerHandler[Const.Method.MESSAGE_STATE_UPDATE] = MessageUpdateHandler(callback, attachmentParserFactory)
     }
 
     fun addHandler(method: String, handler: ResponseHandler) {
@@ -29,7 +30,7 @@ internal class ResponseHandlerWrapper(
             if (existHandler == null) {
                 innerHandler[method] = handler
             } else {
-                logDebug("duplicate handler with the save method: ${method}, handler: ${existHandler.javaClass.name}, skipped")
+                logDebug("duplicated handler with the method: ${method}, handler: ${existHandler.javaClass.name}, current setter is skipped")
             }
         } else {
             innerHandler[method] = handler

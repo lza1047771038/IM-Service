@@ -12,24 +12,25 @@ class GroupServiceWrapper(
 
     private val groupServiceMap: MutableMap<String, GroupChannelImpl> = ConcurrentHashMap()
 
-    override fun createGroup(sessionId: String): GroupChannel {
-        var groupChannel: GroupChannelImpl
+    override fun createGroup(sessionId: String): GroupChannel? {
+        var groupChannel: GroupChannelImpl?
         if (!groupServiceMap.containsKey(sessionId)) {
             synchronized(groupServiceMap) {
                 if (!groupServiceMap.containsKey(sessionId)) {
                     val exist = groupServiceMap[sessionId]
                     if (exist == null) {
-                        groupChannel = GroupChannelImpl(sessionId, clientService)
-                        groupServiceMap[sessionId] = groupChannel
+                        val impl = GroupChannelImpl(sessionId, clientService)
+                        groupServiceMap[sessionId] = impl
+                        groupChannel = impl
                     } else {
                         groupChannel = exist
                     }
                 } else {
-                    groupChannel = groupServiceMap[sessionId]!!
+                    groupChannel = groupServiceMap[sessionId]
                 }
             }
         } else {
-            groupChannel = groupServiceMap[sessionId]!!
+            groupChannel = groupServiceMap[sessionId]
         }
         return groupChannel
     }

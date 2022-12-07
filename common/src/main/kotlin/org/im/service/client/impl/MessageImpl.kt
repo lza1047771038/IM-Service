@@ -3,6 +3,7 @@ package org.im.service.client.impl
 import org.im.service.client.interfaces.Attachment
 import org.im.service.client.interfaces.Message
 import org.im.service.client.metadata.MsgAccount
+import org.im.service.client.metadata.MsgState
 import org.im.service.client.metadata.MsgType
 import org.im.service.client.metadata.SessionType
 import org.im.service.utils.*
@@ -56,6 +57,7 @@ open class MessageImpl(override var uuid: String) : Message {
                 ?.let { MsgAccount.parseAccount(it) }
                 ?.apply { field = this }
         }
+    override var msgState: MsgState = MsgState.Unknown
     override var remoteExtensions: MutableMap<String, Any?>? = null
         set(value) {
             remoteExtensionString = kotlin.runCatching { JSONObject(value) }
@@ -105,6 +107,7 @@ open class MessageImpl(override var uuid: String) : Message {
 
         msgType = jsonObject.type
         sessionType = jsonObject.sessionType
+        msgState = jsonObject.msgState
     }
 
 }

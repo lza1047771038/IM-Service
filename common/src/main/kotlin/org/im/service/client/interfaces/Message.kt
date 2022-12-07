@@ -1,6 +1,7 @@
 package org.im.service.client.interfaces
 
 import org.im.service.client.metadata.MsgAccount
+import org.im.service.client.metadata.MsgState
 import org.im.service.client.metadata.MsgType
 import org.im.service.client.metadata.SessionType
 import org.json.JSONObject
@@ -22,6 +23,8 @@ interface Message: Serializable {
 
     var fromUser: MsgAccount?
     var toUser: MsgAccount?
+
+    var msgState: MsgState
 
     var remoteExtensions: MutableMap<String, Any?>?
     var clientExtensions: MutableMap<String, Any?>?

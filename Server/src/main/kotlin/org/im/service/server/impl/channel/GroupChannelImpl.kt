@@ -14,6 +14,10 @@ class GroupChannelImpl(
 
     private val joinedClients: MutableSet<String> = HashSet<String>()
 
+    override fun containsClient(sessionId: String): Boolean {
+        return synchronized(joinedClients) { joinedClients.contains(sessionId) }
+    }
+
     override fun joinGroup(sessionId: String) {
         if (!joinedClients.contains(sessionId)) {
             synchronized(joinedClients) {
