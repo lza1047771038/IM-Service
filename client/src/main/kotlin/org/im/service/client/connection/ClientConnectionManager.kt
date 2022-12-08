@@ -36,13 +36,18 @@ internal class ClientConnectionManager(
     private var socketChannel: SocketChannel? = null
 
     private val threadRunnable = Runnable {
+        val socketChannel = this.socketChannel
+        val imInitConfig = this.imInitConfig
+        if (socketChannel == null || imInitConfig == null) {
+            return@Runnable
+        } else {
+            val address = InetSocketAddress(imInitConfig.serverAddress, imInitConfig.port)
+            socketChannel.connect(address)
+        }
+
         val currentThread = Thread.currentThread()
         while (currentThread.isAlive && !currentThread.isInterrupted) {
-            val selector = this.selector
-            val socketChannel = this.socketChannel
-            if (selector == null || socketChannel == null) {
-                break
-            }
+            val selector = this.selector ?: break
 
             kotlin.runCatching {
                 selector.select()
@@ -116,10 +121,8 @@ internal class ClientConnectionManager(
         this.imInitConfig = imInitConfig
         val socketChannel = SocketChannel.open()
         val selector = Selector.open()
-        val address = InetSocketAddress(imInitConfig.serverAddress, imInitConfig.port)
         socketChannel.configureBlocking(false)
         socketChannel.register(selector, SelectionKey.OP_CONNECT)
-        socketChannel.connect(address)
 
         this.socketChannel = socketChannel
         this.selector = selector
@@ -139,7 +142,7 @@ internal class ClientConnectionManager(
     fun disconnect() {
         selector?.closeSilently()
         socketChannel?.closeSilently()
-        receiveBuffer.reset()
+        kotlin.runCatching { receiveBuffer.reset() }
         selector = null
         socketChannel = null
     }

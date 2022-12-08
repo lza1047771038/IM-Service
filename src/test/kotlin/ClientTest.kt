@@ -21,8 +21,8 @@ fun main() {
     val port = 8080
 
     val clientConfig = IMInitConfig.Builder()
-        .setAddress(address)
-        .setPort(port)
+        .address(address)
+        .port(port)
         .build()
     clientConfig.serverAddress = address
     clientConfig.port = port

@@ -58,6 +58,7 @@ open class MessageImpl(override var uuid: String) : Message {
                 ?.apply { field = this }
         }
     override var msgState: MsgState = MsgState.Unknown
+    override var time: Long = System.currentTimeMillis()
     override var remoteExtensions: MutableMap<String, Any?>? = null
         set(value) {
             remoteExtensionString = kotlin.runCatching { JSONObject(value) }
@@ -108,6 +109,7 @@ open class MessageImpl(override var uuid: String) : Message {
         msgType = jsonObject.type
         sessionType = jsonObject.sessionType
         msgState = jsonObject.msgState
+        time = jsonObject.time
     }
 
 }

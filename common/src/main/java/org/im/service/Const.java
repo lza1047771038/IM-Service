@@ -18,6 +18,7 @@ public interface Const {
         String PARAM_ATTACHMENT = "atmt"; // String
         String PARAM_SESSION_TYPE = "st"; // int
         String PARAM_STATE = "stat"; // int
+        String PARAM_TIME = "tm";
     }
 
     interface Method {

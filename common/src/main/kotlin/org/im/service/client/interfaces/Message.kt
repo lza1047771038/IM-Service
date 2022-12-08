@@ -26,6 +26,8 @@ interface Message: Serializable {
 
     var msgState: MsgState
 
+    var time: Long
+
     var remoteExtensions: MutableMap<String, Any?>?
     var clientExtensions: MutableMap<String, Any?>?
 

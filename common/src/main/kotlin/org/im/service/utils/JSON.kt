@@ -132,6 +132,9 @@ val JSONObject.sessionType: SessionType
 val JSONObject.attachment: String?
     get() = content?.optString(Const.Param.PARAM_ATTACHMENT)
 
+val JSONObject.time: Long
+    get() = content?.optLong(Const.Param.PARAM_TIME) ?: 0L
+
 /**
  * 更新参数
  */
@@ -179,4 +182,6 @@ internal fun JSONObject.parseIMMessage(method: String, message: Message) = apply
 
     // put attachment string
     content.put(Const.Param.PARAM_ATTACHMENT, message.attachment?.toJson())
+
+    content.put(Const.Param.PARAM_TIME, message.time)
 }
